@@ -1,0 +1,38 @@
+{
+  "name": "siloeserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon ./app.js",
+    "start": "forever start -w app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "add": "^2.0.6",
+    "app-root-path": "^3.0.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.17.3",
+    "firebase-admin": "^10.1.0",
+    "multiline": "^2.0.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "node-fetch": "^3.2.3",
+    "nodemon": "^2.0.14",
+    "or": "^0.2.0",
+    "request": "^2.88.2",
+    "require": "^2.4.20",
+    "socket.io": "^4.4.1",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5",
+    "yarn": "^1.22.18"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.0"
+  }
+}
