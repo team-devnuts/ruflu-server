@@ -57,7 +57,7 @@ router.post("/token/udt", async function(req, res, next){
     query = mysql.format(query, data);
     console.log(query);
     // db pool 가져오기
-    const connection = await db.getConnection(async conn => conn);
+    const connection = await db.getConnection(async conn => console.log(conn));
     // 트랜잭션 처리
     await connection.beginTransaction();
     const rows = await connection.query(query);
