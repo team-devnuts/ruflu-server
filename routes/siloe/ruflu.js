@@ -92,21 +92,14 @@ router.post("/ins/like" , async (req,res) => {
 
         logger.info(`is success like2 ?  ${rows}`)
         // 상대방에게 푸시알람
-        // if(falg) send push alrarm
-        //if(rows.)
+        // if(falg) send push alrarm   
+        if(rows.length > 0) {
+            sendPushAlram('match', '1');
+        }
         // 결과값 리턴
     } else {
         // 상대방에게 알림 보내기
-        request.post({
-            headers : {'content-type': 'application/json'},
-            url : 'http://localhost:8005/alarm/push/like',
-            body : {
-                toUserId: '1'
-            },
-            json : true
-        }, (error, req, res) =>{
-            logger.info(error)
-        });
+        sendPushAlram('like', '1');
         /*
         fetch("/alarm/push/like", {
             method: 'post',
@@ -233,6 +226,19 @@ let getUserImgs = async function(userList) {
     });
 }
 
+const sendPushAlram  = function(alarmType, userId) {
+    // 상대방에게 알림 보내기
+    request.post({
+        headers : {'content-type': 'application/json'},
+        url : 'http://localhost:8005/alarm/push/' + alarmType,
+        body : {
+            toUserId: userId
+        },
+        json : true
+    }, (error, req, res) =>{
+        logger.info(error)
+    });
+}
 
 
 
