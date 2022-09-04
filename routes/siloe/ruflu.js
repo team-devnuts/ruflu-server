@@ -11,6 +11,8 @@ router.get('/', function(req, res, next) {
     res.json({state:200})
 });
 
+
+/* ***** Ruflu API ***** */ 
 router.get("/userCardList" , async (req,res) => {
     let userCardList = "";
     
@@ -36,6 +38,9 @@ router.get("/userCardList" , async (req,res) => {
         
 });
 
+// Ruflu 카드스택뷰
+// - 싫어요, 터치 왼쪽 슬라이드시
+// ruflu_hate_info Table에 ins
 router.post("/ins/hate" , async function(req,res) {
     const userId = req.get("user_id");
     const toUserId = req.body.to_user_id;
@@ -110,7 +115,9 @@ router.post("/ins/like" , async (req,res) => {
     }
     await connection.commit();
 })
+/* ***** Ruflu API ***** */ 
 
+/* ***** NearBy API ***** */ 
 router.get("/NbUserList", async (req, res) => {
     const userId = req.get("user_id")
     let userList = "";
@@ -141,7 +148,9 @@ router.get("/NbUserList", async (req, res) => {
     logger.info(userList)
     res.json(userList) 
 })
+/* ***** NearBy API ***** */ 
 
+/* ***** 좋아요 매칭 리스트 ***** */ 
 // home lv1 리스트 (좋아요)
 router.get("/seLv1List", async (req, res) => {
     let userList = ""
@@ -159,7 +168,7 @@ router.get("/seLv1List", async (req, res) => {
 
     
     if(rows.length > 0) {
-        await getUserImgs(userList)
+        await getUserImgs(userList) // 이미지 정보 조회
         logger.info("/seLv1List : query complete")
         logger.info(userList)
         res.json(userList)
@@ -167,7 +176,7 @@ router.get("/seLv1List", async (req, res) => {
 })
 
 
-// home lv2 리스트 (매치)
+// home lv2 리스트 조회 (매치)
 router.get("/seLv2List", async (req, res) => {
     const userId = req.get("user_id")
     const data  = [userId, userId]
@@ -185,7 +194,12 @@ router.get("/seLv2List", async (req, res) => {
     
 })
 
-router.get("/seLv1/like", async (req, res) => {
+
+/*
+    lv1 단계에서 like -> 매칭
+    TABLE INSERT
+*/
+router.get("/ins/likeLv1", async (req, res) => {
     const toUserId = req.get("userId")
     const userId = req.get("user_id")
     const data  = [toUserId, userId]
@@ -197,6 +211,11 @@ router.get("/seLv1/like", async (req, res) => {
     const connection = await db.getConnection(async conn => conn);
     // 트랜잭션 처리
     const rows = await connection.query(query);
+
+    // 매칭알람 보내기
+    // toUserId 상대방유저key
+    sendPushAlram("match",toUserId);
+
 })
 
 let getUserImgs = async function(userList) {
@@ -226,11 +245,11 @@ let getUserImgs = async function(userList) {
     });
 }
 
-const sendPushAlram  = function(alarmType, userId) {
+const sendPushAlram  = function(alarmUrl, userId) {
     // 상대방에게 알림 보내기
     request.post({
         headers : {'content-type': 'application/json'},
-        url : 'http://localhost:8005/alarm/push/' + alarmType,
+        url : 'http://localhost:8005/alarm/push/' + alarmUrl,
         body : {
             toUserId: userId
         },
@@ -239,7 +258,5 @@ const sendPushAlram  = function(alarmType, userId) {
         logger.info(error)
     });
 }
-
-
 
 module.exports = router;
