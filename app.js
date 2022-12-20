@@ -1,5 +1,5 @@
 const express = require('express');
-const http = require('http');
+const http = require('node:http');
 const app = express();
 const bodyParser = require('body-parser');
 const db_config = require(__dirname + '/config/database.js');
@@ -10,14 +10,6 @@ const io = socketIO(server);
 
 // express 서버 포트 설정
 app.set('port', 8005);
-
-
-// 서버 생성
-server.listen(app.get('port'), function(){
-    console.log('Express server listening on port ' + app.get('port'));
-});
-
-
 
 app.get("/", function(req,res) {
     res.json({state:200});
@@ -40,15 +32,15 @@ io.on("connection", (socket) => {
         console.log(room_no);
         socket.join(room_no);
     });
-
+    
     socket.on("new message", (data) => {
-
+        
         console.log(data);
     });
 });
 
 
-const rufluRouter = require('./routes/siloe/ruflu');
+const rufluRouter = require('./routes/ruflu/ruflu');
 const mainRouter = require('./routes/main/main');
 const alarmRouter = require('./routes/alarm/alarm');
 const loginRouter = require('./routes/login/ouathAPI');
@@ -68,3 +60,8 @@ app.use(cookieParser());
 
 app.use(express.static('public'));
 app.use(express.static('uploads'));
+
+// 서버 생성
+server.listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
+});
