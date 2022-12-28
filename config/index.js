@@ -10,4 +10,7 @@ module.exports = {
     databasePW: process.env.MYSQL_ACCESS_PW,
     databaseNAME: process.env.MYSQL_DATABASE,
     imageDIR: process.env.IMAGE_DIR,
+    api : {
+        prefix : '/api'
+    }
 }

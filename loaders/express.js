@@ -1,4 +1,5 @@
 const express = require('express');
+const router = require('@/api') ;
 const config = require('../config');
 
 module.exports = async ( {app} ) => {
@@ -8,6 +9,7 @@ module.exports = async ( {app} ) => {
     app.use(require('cookie-parser')());
     app.use(express.static('public'));
     app.use(express.static(config.imageDIR));
+    app.use(config.api.prefix,router())
 
     app.get("/", function(req,res) {
         res.json({state:200});

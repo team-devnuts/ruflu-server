@@ -19,6 +19,7 @@ const connectionDB =  async (dbInfo) => {
     pool.on('release', function (connection) {
     logger.info(`Connection ${connection.threadId} released`);
     });
+    
 }
 
 const getPoolConection =  async function(callback) {

@@ -1,23 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
-const db_config = require('../../config/database');
-const logger = require('../../config/logger');
+const db_config = require('../../loaders/database');
+const logger = require('../../loaders/logger');
 
-router.post('/oauthAPI', async (req, res) => {
-    res.json({state:200})
-});
 
-router.get('/', (req, res) => {
-    logger.info('GET /');
-    res.sendStatus(200);
-})
-router.get('/error', (req,res) => {
-    logger.error('Error message');
-    res.sendStatus(500);
-})
+module.exports = (app) => {
+    app.use('/login', router);
 
-module.exports = router;
+    router.post('/oauthAPI', async (req, res) => {
+        res.json({state:200})
+    });
+    
+    router.get('/', (req, res) => {
+        logger.info('GET /');
+        res.sendStatus(200);
+    })
+    router.get('/error', (req,res) => {
+        logger.error('Error message');
+        res.sendStatus(500);
+    })
+
+}
 
 
 
