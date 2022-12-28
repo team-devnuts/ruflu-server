@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
-const db = require('../../loaders/database');
+const db = require('../../../loaders/database');
 const mainQuery = require('./mainQuery')
 
 module.exports = (app) => {

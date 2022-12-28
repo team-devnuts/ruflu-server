@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
-const db_config = require('../../loaders/database');
-const logger = require('../../loaders/logger');
+const db_config = require('../../../loaders/database');
+const logger = require('../../../loaders/logger');
 
 
 module.exports = (app) => {
