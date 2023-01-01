@@ -1,10 +1,5 @@
 const express = require('express');
-const http = require('node:http');
-//const server = http.createServer(app);
-const bodyParser = require('body-parser');
 const loaders = require('./loaders');
-const socketIO = require('socket.io');
-//const io = socketIO(server);
 const config = require('./config');
 
 
@@ -14,6 +9,8 @@ const config = require('./config');
 // 1. socket 연결이 안되었을때
 // 1. 1:1 매칭 할 때 room_no 기억하기
 /*
+const socketIO = require('socket.io');
+//const io = socketIO(server);
 io.on("connection", (socket) => {
     socket.on("join", (data) => {
         console.log("join");
@@ -39,7 +36,7 @@ io.on("connection", (socket) => {
 async function startServer() {
     const app = express();
     await loaders({ expressApp: app });
-
+    
     // 서버 open
     app.listen(config.port, function(){
         console.log('Express server listening on port ' + config.port);
