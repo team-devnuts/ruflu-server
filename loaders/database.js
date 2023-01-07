@@ -1,7 +1,6 @@
 const mysqlPromise =  require('mysql2/promise');
 const logger = require("./logger");
 const config = require('../config');
-const mysql = require('mysql');
 
 const connectionDB =  async (dbInfo) => {
     
@@ -20,26 +19,28 @@ const connectionDB =  async (dbInfo) => {
         logger.info(`Connection ${connection.threadId} released`);
     });
     
-    mysql.config.queryFormat = function (query, values) {
-        if (!values) return query;
-        return query.replace(/\:(\w+)/g, function (txt, key) {
-            if (values.hasOwnProperty(key)) {
-                return this.escape(values[key]);
-            }
-            return txt;
-        }.bind(this));
-    };
 }
 
 const getPoolConection =  async function(callback) {
-    pool.getConnection(function(err, connection){
+    const connection = await pool.getConnection(function(err, connection){
         callback(err, connection)
     });
+    connection.config.queryFormat = queryFormat;
 }
 
 const getPool = async () => {
     return pool
 }
+
+function queryFormat(query, values) {
+    if (!values) return query;
+    return query.replace(/\:(\w+)/g, function (txt, key) {
+        if (values.hasOwnProperty(key)) {
+            return this.escape(values[key]);
+        }
+        return txt;
+    }.bind(this));
+};
 
 connectionDB({
     host: config.databaseHOST,
@@ -48,5 +49,5 @@ connectionDB({
     password: config.databasePW,
     database: config.databaseNAME})
 
-module.exports = {getPoolConection, getPool, mysql};
+module.exports = {getPoolConection, getPool};
 
