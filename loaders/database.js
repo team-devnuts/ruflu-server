@@ -1,11 +1,11 @@
-const mysql =  require('mysql2/promise');
+const mysqlPromise =  require('mysql2/promise');
 const logger = require("./logger");
 const config = require('../config');
-
+const mysql = require('mysql');
 
 const connectionDB =  async (dbInfo) => {
     
-    const pool = mysql.createPool(dbInfo);
+    const pool = mysqlPromise.createPool(dbInfo);
     logger.info(`Connection pool created.`);
     
     pool.on('acquire', function (connection) {
@@ -17,9 +17,18 @@ const connectionDB =  async (dbInfo) => {
     });
     
     pool.on('release', function (connection) {
-    logger.info(`Connection ${connection.threadId} released`);
+        logger.info(`Connection ${connection.threadId} released`);
     });
     
+    mysql.config.queryFormat = function (query, values) {
+        if (!values) return query;
+        return query.replace(/\:(\w+)/g, function (txt, key) {
+            if (values.hasOwnProperty(key)) {
+                return this.escape(values[key]);
+            }
+            return txt;
+        }.bind(this));
+    };
 }
 
 const getPoolConection =  async function(callback) {
@@ -39,5 +48,5 @@ connectionDB({
     password: config.databasePW,
     database: config.databaseNAME})
 
-module.exports = {getPoolConection, getPool};
+module.exports = {getPoolConection, getPool, mysql};
 
