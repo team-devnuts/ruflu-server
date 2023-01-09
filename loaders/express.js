@@ -1,5 +1,5 @@
 const express = require('express');
-const router = require('@/api') ;
+const router = require(process.env.PWD + '/api') ;
 const config = require('../config');
 
 module.exports = async ( {app} ) => {

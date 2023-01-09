@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
-const db = require('../../loaders/database');
-const logger = require('../../loaders/logger');
-const rufluQuery = require("./rufluQuery");
+const db = require(process.env.PWD + '/loaders/database');
+const logger = require(process.env.PWD + '/loaders/logger');
+const rufluQuery = require("../../../service/homeQuery");
 const request = require('request');
+const controller = require(process.env.PWD + '/controller/homeController');
 
 module.exports = (app) => {
     app.use('/home', router);
@@ -15,31 +16,11 @@ module.exports = (app) => {
     });
     
     router.get("/userCardList" , async (req,res) => {
-        let userCardList = "";
-        
-        const connection = await db.getConnection(async conn => conn);
-        const userId = req.get("user_id");
-        const data = [userId, userId, userId];
-        let query = rufluQuery.getUserCardList;
-        query = mysql.format(query, data);
-        logger.info(`${query}`);
-        const [rows] = await connection.query(query);
-        console.log(rows);
-        userCardList = rows;
-        connection.release();
-        if(rows.length <= 0) {
-            
-        } else {
-            await getUserImgs(userCardList);
-        }
-        
-        //userCardList = result;
-        console.log(userCardList[0])
-        res.json(userCardList)   
-            
+        res.json(await controller.getCards(req, res))          
     });
     
     router.post("/ins/hate" , async function(req,res) {
+        controller.addHateUser(req, res);
         const userId = req.get("user_id");
         const toUserId = req.body.to_user_id;
         console.log(userId);
@@ -62,6 +43,7 @@ module.exports = (app) => {
     
     
     router.post("/ins/like" , async (req,res) => {
+        controller.addLikeUser(req, res);
         const userId = req.get("user_id");
         const toUserId = req.body.to_user_id;
         let data = [userId, toUserId];
@@ -121,39 +103,9 @@ module.exports = (app) => {
         await connection.commit();
     })
     
-    router.get("/NbUserList", async (req, res) => {
-        const userId = req.get("user_id")
-        let userList = "";
-        console.log(userId)
-        const data = [userId]
-        let query = rufluQuery.selectLocInfo;
-        query = mysql.format(query, data);
-    
-        // db pool 가져오기
-        const connection = await db.getConnection(async conn => conn);
-        // 트랜잭션 처리
-        const [result] = await connection.query(query);
-        const data2 = [result[0].user_latitude,result[0].user_longitude,result[0].user_latitude];
-        query = mysql.format(rufluQuery.selectNbUserlist, data2);
-    
-        const [rows] = await connection.query(query);
-        
-        userList = rows;
-        
-        // db pool 반환
-        connection.release();
-        if(rows.length <= 0) {
-            
-        } else {
-            await getUserImgs(userList)
-        }
-    
-        logger.info(userList)
-        res.json(userList) 
-    })
-    
     // home lv1 리스트 (좋아요)
     router.get("/seLv1List", async (req, res) => {
+        controller.getLikeMeList(req, res);
         let userList = ""
         const userId = req.get("user_id")
         const data  = [userId]
@@ -179,6 +131,7 @@ module.exports = (app) => {
     
     // home lv2 리스트 (매치)
     router.get("/seLv2List", async (req, res) => {
+        controller.getUserMatchedWithMeList(req, res);
         const userId = req.get("user_id")
         const data  = [userId, userId]
         let query = rufluQuery.selectSeLv2List
@@ -196,6 +149,7 @@ module.exports = (app) => {
     })
     
     router.get("/seLv1/like", async (req, res) => {
+        controller.addUserInMyMatchListUserCase(req, res);
         const toUserId = req.get("userId")
         const userId = req.get("user_id")
         const data  = [toUserId, userId]

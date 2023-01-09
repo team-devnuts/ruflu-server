@@ -7,16 +7,16 @@ let json = {
         SELECT 'X'
         FROM ruflu_lv1_like_info B
         WHERE A.USER_ID = B.to_user_id
-          AND B.USER_ID = ?
+          AND B.USER_ID = :userId
     )
     AND NOT EXISTS (
         SELECT 'X'
         FROM ruflu_hate_info B
         WHERE A.USER_ID = B.to_user_id
-          AND B.USER_ID = ?
+          AND B.USER_ID = :userId
 
     )
-    AND USER_ID <> ?
+    AND USER_ID <> :userId
     LIMIT 49
      `,
     insertHateUser : 
