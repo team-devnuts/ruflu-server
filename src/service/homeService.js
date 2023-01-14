@@ -1,7 +1,7 @@
 "use strict";
-const database = require(process.env.PWD + '/loaders/database');
-const homeQueryStore = require(process.env.PWD + '/service/homeQuery');
-const logger = require(process.env.PWD + '/loaders/logger');
+const database = require(process.env.PWD + '/src/loaders/database');
+const homeQueryStore = require(process.env.PWD + '/src/service/homeQuery');
+const logger = require(process.env.PWD + '/src/loaders/logger');
 
 const getCards = async (data) => {
     let query = homeQueryStore.getUserCardList;
@@ -9,6 +9,7 @@ const getCards = async (data) => {
     let [rows] = await poolConnection.query(query, data);
 
     logger.info(`getUserCardList : ${rows}`);
+    
     rows = rows.length >0 ? await getCardImages(rows) : '';
     poolConnection.release();
     return rows;

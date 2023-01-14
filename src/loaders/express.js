@@ -1,5 +1,5 @@
 const express = require('express');
-const router = require(process.env.PWD + '/api') ;
+const router = require(process.env.PWD + '/src/api') ;
 const config = require('../config');
 
 module.exports = async ( {app} ) => {
@@ -11,7 +11,7 @@ module.exports = async ( {app} ) => {
     app.use(express.static(config.imageDIR));
     app.use(config.api.prefix,router())
 
-    app.get("/", function(req,res) {
+    app.get("/", async function(req,res) {
         res.json({state:200});
     });
 

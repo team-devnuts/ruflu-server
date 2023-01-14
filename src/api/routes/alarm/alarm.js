@@ -1,11 +1,11 @@
-const { Router } = require('express');
+const {Router} = require('express');
 const router = Router();
 const mysql = require('mysql');
-const db = require(process.env.PWD + '/loaders/database');
+const db = require(process.env.PWD + '/src/loaders/database');
 const admin = require('firebase-admin'); 
 const serviceAccount = require(process.env.PWD + '/ruflu-e48f5-firebase-adminsdk-spqgm-acc7d36e6e.json');
-const { appCheck } = require('firebase-admin');
-const logger = require(process.env.PWD + '/loaders/logger');
+const {appCheck} = require('firebase-admin');
+const logger = require(process.env.PWD + '/src/loaders/logger');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)

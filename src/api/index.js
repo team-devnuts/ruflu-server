@@ -14,4 +14,5 @@ module.exports = () => {
     loginRouter(app);
     chatRouter(app);
     return app;
-}
+};
+

@@ -1,6 +1,10 @@
 const express = require('express');
-const loaders = require('./loaders');
-const config = require('./config');
+const loaders = require('./src/loaders');
+const logger = require('./src/loaders/logger')
+const config = require('./src/config');
+const app = express();
+
+
 
 
 //const require  = require('app-root-path');
@@ -34,17 +38,22 @@ io.on("connection", (socket) => {
 */
 
 async function startServer() {
-    const app = express();
+
     await loaders({ expressApp: app });
     
     // 서버 open
     app.listen(config.port, function(){
-        console.log('Express server listening on port ' + config.port);
+        logger.info('Express server listening on port ' + config.port);
     }).on('error', err => {
-        Logger.error(err);
+        logger.error(err);
         process.exit(1);
     });
+    
 }
 
 startServer();
+
+
+module.exports = app;
+
 

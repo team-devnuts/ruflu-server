@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
-const db = require(process.env.PWD + '/loaders/database');
-const logger = require(process.env.PWD + '/loaders/logger');
+const db = require(process.env.PWD + '/src/loaders/database');
+const logger = require(process.env.PWD + '/src/loaders/logger');
 const rufluQuery = require("../../../service/homeQuery");
 const request = require('request');
-const controller = require(process.env.PWD + '/controller/homeController');
+const controller = require(process.env.PWD + '/src/controller/homeController');
 
 module.exports = (app) => {
     app.use('/home', router);

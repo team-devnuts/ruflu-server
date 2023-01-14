@@ -19,6 +19,7 @@ const options = {
     json: false,
     colorize: true,
     format: combine(
+      winston.format.colorize({ all: true }),
       label({ label: 'express_server' }),
       timestamp(),
       myFormat
@@ -49,6 +50,7 @@ winston.addColors(options.colors);
   
 let logger = new winston.createLogger({
     levels: options.levels,
+    level: 'custom',
     transports: [
       new winston.transports.Console(options.console)
     ],
