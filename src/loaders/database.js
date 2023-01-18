@@ -1,5 +1,5 @@
 const mysqlPromise =  require('mysql2/promise');
-const logger = require("../loaders/logger");
+const logger = require("./logger");
 const config = require('../config');
 
 const pool = mysqlPromise.createPool({
@@ -34,7 +34,7 @@ const getPool = async () => {
     return pool
 }
 
-const getPoolConection =  async () => {
+const getPoolConection = async () => {
     const connection = await pool.getConnection(async conn => conn);
     connection.config.queryFormat = queryFormat;
     connection.on('error', handledErr);
@@ -59,5 +59,5 @@ function handledErr(err) {
     logger.error(`sql : ${err.sql}`);
 };
 
-module.exports = {getPoolConection, getPool};
+module.exports = {getPoolConection, pool};
 

@@ -1,6 +1,6 @@
 "use strict";
-
 const {service} = require('../service/homeService');
+const request = require('request');
 
 const getCards = async (req, res) => {
     const userId = req.get("user_id");
@@ -8,24 +8,36 @@ const getCards = async (req, res) => {
     return await service.getCards(data);
 };
 
-const addHateUser = (req, res) => {
-    
+const addHateUser = async (req, res) => {
+    const userId = req.get("user_id");
+    const toUserId = req.body.to_user_id;
+    const data = {userId, toUserId};
+    return await service.addHateUser(data);
 };
 
-const addLikeUser = (req, res) => {
-
+const addLikeUser = async (req, res) => {
+    const userId = req.get("user_id");
+    const toUserId = req.body.to_user_id;
+    let data = {userId, toUserId};
+    return await service.addLikeUser(data);
 };
 
-const getLikeMeList = (req, res) => {
-
+const getLikeMeList = async (req, res) => {
+    const data = {toUserId:req.get("user_id")}
+    return await service.getLikeMeList(data);
 };
 
 const getUserMatchedWithMeList =  (req, res) => {
-
+    const userId = req.get("user_id");
+    const data  = [userId, userId];
+    return service.getUserMatchedWithMeList(data);
 };
 
-const addUserInMyMatchListUserCase = (req, res) => {
-
+const addUserInMyMatchList = (req, res) => {
+    const toUserId = req.get("userId");
+    const userId = req.get("user_id");
+    const data  = [toUserId, userId];
+    return service.addUserInMyMatchList(data);
 };
 
 module.exports = {
@@ -34,5 +46,5 @@ module.exports = {
     ,addLikeUser
     ,getLikeMeList
     ,getUserMatchedWithMeList
-    ,addUserInMyMatchListUserCase
+    ,addUserInMyMatchList
 };

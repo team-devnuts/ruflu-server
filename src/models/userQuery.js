@@ -1,5 +1,5 @@
 let json = {
-    getUserCardList : 
+    selectUserCardList : 
     `SELECT 
         A.user_id, A.nick_nm, A.birth 
      FROM user_profile_info A
@@ -23,20 +23,20 @@ let json = {
     `INSERT INTO 
         ruflu_hate_info (USER_ID, to_user_id, reg_dtm) 
     values 
-    (?,?,NOW())
+    (:userId,toUserId,NOW())
     `,
     insertLikeUser :
     `INSERT INTO ruflu_lv1_like_info 
     (USER_ID, to_user_id, reg_dtm) 
     values 
-    (?,?,NOW())
+    (:userId,:toUserId,NOW())
     `,
     selectLocInfo :
     `SELECT
         loca_latitude AS user_latitude
         ,loca_longitude AS user_longitude
      FROM user_live_info
-     WHERE user_id = ?
+     WHERE user_id = :userId
     `,
     selectNbUserlist : 
     `SELECT 
@@ -84,7 +84,7 @@ let json = {
     FROM user_album_info
     WHERE user_id IN (
     `,
-    selectSeLv1List:
+    selectLikeMeList:
     `SELECT
         A.to_user_id
         ,A.to_user_id as user_id
@@ -111,9 +111,9 @@ let json = {
             ON A.to_user_id = B.user_id
         LEFT JOIN user_live_info C
             ON A.to_user_id = C.user_id
-     WHERE A.to_user_id = ?
+     WHERE A.to_user_id = :toUserId
     `,
-    selectLikeMe:
+    selectLikeMeUser:
     `SELECT
         A.to_user_id
         ,A.to_user_id as user_id
@@ -140,28 +140,28 @@ let json = {
             ON A.to_user_id = B.user_id
         LEFT JOIN user_live_info C
             ON A.to_user_id = C.user_id
-     WHERE A.to_user_id = ?
-       AND A.user_id = ?
+     WHERE A.to_user_id = :userId
+       AND A.user_id = :toUserId
     `,
-    selectMatchInfo: 
+    selectMatchUser: 
     `SELECT
         A.user_id
         ,B.user_id
      FROM ruflu_lv1_like_info A
         JOIN ruflu_lv1_like_info B
-          ON B.user_id = ?
+          ON B.user_id = :userId
           AND A.to_user_id = B.user_id
-     WHERE A.user_id = ?
+     WHERE A.user_id = :userId
        AND A.user_id = B.to_user_id
     `,
-    insertLv2Like:
+    insertMatchUser:
     `
     INSER INTO ruflu_lv2_like_info
     (user2_id, user1_id, reg_dtm, chg_dtm)
     VALUES
-    (?, ?, NOW(), NOW())
+    (:userId, :toUserId, NOW(), NOW())
     `,
-    selectSeLv2List:
+    selectMatchList:
     `SELECT
         A.user2_id
         ,B.nick_nm

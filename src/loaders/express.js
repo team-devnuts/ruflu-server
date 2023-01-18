@@ -9,7 +9,7 @@ module.exports = async ( {app} ) => {
     app.use(require('cookie-parser')());
     app.use(express.static('public'));
     app.use(express.static(config.imageDIR));
-    app.use(config.api.prefix,router())
+    app.use(config.api.prefix, await router())
 
     app.get("/", async function(req,res) {
         res.json({state:200});
