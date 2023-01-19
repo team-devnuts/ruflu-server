@@ -1,23 +1,20 @@
 const express = require('express');
-const http = require('node:http');
+const loaders = require('./src/loaders');
+const logger = require('./src/loaders/logger')
+const config = require('./src/config');
 const app = express();
-const bodyParser = require('body-parser');
-const db_config = require(__dirname + '/config/database.js');
-const cookieParser = require('cookie-parser');
-const socketIO = require('socket.io');
-const server = http.createServer(app);
-const io = socketIO(server);
 
-// express 서버 포트 설정
-app.set('port', 8005);
 
-app.get("/", function(req,res) {
-    res.json({state:200});
-});
+
+
+//const require  = require('app-root-path');
 
 // 채팅 실시간 처리 구현
 // 1. socket 연결이 안되었을때
 // 1. 1:1 매칭 할 때 room_no 기억하기
+/*
+const socketIO = require('socket.io');
+//const io = socketIO(server);
 io.on("connection", (socket) => {
     socket.on("join", (data) => {
         console.log("join");
@@ -38,30 +35,25 @@ io.on("connection", (socket) => {
         console.log(data);
     });
 });
+*/
+
+async function startServer() {
+
+    await loaders({ expressApp: app });
+    
+    // 서버 open
+    app.listen(config.port, function(){
+        logger.info('Express server listening on port ' + config.port);
+    }).on('error', err => {
+        logger.error(err);
+        process.exit(1);
+    });
+    
+}
+
+startServer();
 
 
-const rufluRouter = require('./routes/ruflu/ruflu');
-const mainRouter = require('./routes/main/main');
-const alarmRouter = require('./routes/alarm/alarm');
-const loginRouter = require('./routes/login/ouathAPI');
-const chatRouter = require('./routes/chat/chat');
-//const require  = require('app-root-path');
+module.exports = app;
 
-//app.use(bodyParser.json);
-app.use(express.urlencoded({extended : false}));
-app.use(express.json());
-app.use('/home', rufluRouter);
-app.use('/main', mainRouter);
-app.use('/alarm', alarmRouter);
-app.use('/login', loginRouter);
-// 채팅 관련 api
-app.use('/chat', chatRouter);
-app.use(cookieParser());
 
-app.use(express.static('public'));
-app.use(express.static('uploads'));
-
-// 서버 생성
-server.listen(app.get('port'), function(){
-    console.log('Express server listening on port ' + app.get('port'));
-});
