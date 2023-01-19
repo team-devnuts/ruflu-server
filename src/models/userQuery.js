@@ -91,19 +91,6 @@ let json = {
         ,B.nick_nm
         ,B.gender
         ,B.birth
-        ,B.wei
-        ,B.hei
-        ,B.occu
-        ,B.occu_dtl
-        ,B.rlgn
-        ,B.alch
-        ,B.fancy
-        ,B.intd
-        ,B.qa1
-        ,B.repl1
-        ,B.qa2
-        ,B.repl2
-        ,B.hob
         ,C.loca_latitude
         ,C.loca_longitude
      FROM ruflu_lv1_like_info A

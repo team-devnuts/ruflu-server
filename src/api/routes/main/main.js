@@ -1,56 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql');
-const db = require('../../../loaders/express');
-const mainQuery = require('./mainQuery')
+const controller = require('../../../controller/mainController');
 
 module.exports = (app) => {
-    app.use('/main', router)
+    app.use('/main', router);
     // 라우터의 get 함수 를 이용해 request url에 대한 업무처리 로직 정의
     router.get('/', function(req, res, next) {
-        res.json({state:200})
+        res.json({state:200});
     });
     
-    router.post("/loca/udt", async function(req, res, next){
-        const latitude = req.body.latitude;
-        const longitude =req.body.longitude;
-        const userId = req.get("user_id");
-        console.log(latitude);
-        console.log(longitude);
-        const data = [latitude,longitude,userId];
-        let query = mainQuery.updateUserLoca;
-        query = mysql.format(query, data);
+    router.post("/loca/udt", async (req, res, next) => {
+        res.json(await controller.updateLocation(req, res));
+    });
     
-        // db pool 가져오기
-        const connection = await db.getConnection(async conn => conn);
-        // 트랜잭션 처리
-        await connection.beginTransaction();
-        const rows = await connection.query(query);
-        await connection.commit();
-        // db pool 반환
-        connection.release();
-    
-        res.json("success");
-    
-    })
-    
-    router.post("/token/udt", async function(req, res, next){
-        const token = req.body.token;
-        const userId = req.get("user_id");
-        console.log(token);
-        const data = [token, userId];
-        let query = mainQuery.updateUserToken;
-        query = mysql.format(query, data);
-        console.log(query);
-        // db pool 가져오기
-        const connection = await db.getConnection(async conn => console.log(conn));
-        // 트랜잭션 처리
-        await connection.beginTransaction();
-        const rows = await connection.query(query);
-        await connection.commit();
-        // db pool 반환
-        connection.release();
-    
-        res.json("success"); 
-    })
+    router.post("/token/udt", async (req, res, next) => {
+        res.json(await controller.updateToken(req, res));
+    });
 }

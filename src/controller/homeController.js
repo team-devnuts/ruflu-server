@@ -1,6 +1,5 @@
 "use strict";
 const {service} = require('../service/homeService');
-const request = require('request');
 
 const getCards = async (req, res) => {
     const userId = req.get("user_id");
