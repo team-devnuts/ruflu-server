@@ -49,7 +49,7 @@ const getLikeMeList = async (data) => {
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     let [rows] = await userStore.selectLikeMeList(data);
-    rows = rows.length >0 ? await getCardImages(data) : {};
+    rows = rows.length >0 ? await getCardImages(rows) : {};
     poolConnection.release();
     return rows;
 };

@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require("../../app");
-jest.setTimeout(newTimeout);
 
 describe('Test /', () => {
     it('shoud return {state:200}', (done) => {
