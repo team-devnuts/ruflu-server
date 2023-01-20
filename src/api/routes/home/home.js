@@ -46,17 +46,17 @@ module.exports = async (app) => {
     
     // home lv1 리스트 (좋아요)
     router.get("/seLv1List", async (req, res) => {
-        res.json(controller.getLikeMeList(req, res));
+        res.json(await controller.getLikeMeList(req, res));
     })
     
     
     // home lv2 리스트 (매치)
     router.get("/seLv2List", async (req, res) => {
-        res.json(controller.getUserMatchedWithMeList(req, res)); 
+        res.json(await controller.getUserMatchedWithMeList(req, res)); 
     });
     
     router.get("/seLv1/like", async (req, res) => {
-        res.json(controller.addUserInMyMatchList(req, res));
+        res.json(await controller.addUserInMyMatchList(req, res));
     })
     
     

@@ -15,15 +15,16 @@ User.prototype.getUserList = async (data) => {
 }
 User.prototype.selectUserListImages = async (data) => {
     let query = userQueryStore.selectUserAlbum;
+    let bindData = [];
     for (const key in data) {
         query += "?"
-        data[key] = data[key].user_id
+        bindData[key] = data[key].user_id
         if(key != (data.length-1))
             query += ","
         else query += ""
     }
     query += ")";
-    query = mysql.format(query, data);
+    query = mysql.format(query, bindData);
     const result = await this.poolConnection.query(query);
     return result;
 }
