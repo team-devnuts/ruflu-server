@@ -4,12 +4,17 @@ const userStore = require('../models/User');
 const logger = require(process.env.PWD + '/src/loaders/logger');
 
 const getUsers = async (data) => {
+    let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     let [rows] = await userStore.getUsers(data);
-    rows = rows.length > 0 ? await getUserListImages(rows) : {};   
+    rows = rows.length > 0 ? await getUserListImages(rows) : {};  
+    responseObj.result = rows;
     poolConnection.release();
-    return rows;
+
+    logger.info(responseObj);
+    console.log(responseObj);
+    return responseObj;
 };
 
 const addHateUser = async (data) => {
@@ -75,7 +80,6 @@ const addUserInMyMatchList = async (data) => {
 const getUserListImages = async (userList) => {
     const [rows] = await userStore.getUserListImages(userList);
     userList.forEach(user => {
-        console.log(user);
         let imageArr = new Array();
         rows.forEach(userAlbum => {
             if(user.user_id == userAlbum.user_id) {
