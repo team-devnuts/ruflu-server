@@ -1,7 +1,7 @@
 let json = {
     selectUserCardList : 
     `SELECT 
-        A.user_id, A.nick_name, A.gender, A.birth, B.location_latitude, B.location_longitude 
+        A.user_id, A.nick_name, A.birth, B.location_latitude, B.location_longitude 
      FROM user_profile_info A
         LEFT JOIN user_info B
         ON A.user_id = B.user_id
@@ -66,6 +66,17 @@ let json = {
         ,image_file_path
         ,image_file_name
     FROM user_album_info
+    WHERE user_id IN (
+    `,
+    selectUserProfile:
+    `SELECT
+        user_id
+        ,height
+        ,gender
+        ,job
+        ,fancy
+        ,academy
+    FROM user_profile_info
     WHERE user_id IN (
     `,
     selectLikeMeList:

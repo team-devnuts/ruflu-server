@@ -2,13 +2,20 @@
 const database = require(process.env.PWD + '/src/loaders/database');
 const userStore = require('../models/User');
 const logger = require(process.env.PWD + '/src/loaders/logger');
-
+const profileTitle = {
+    "gender":"성별",
+    "height":"키",
+    "job":"직업",
+    "fancy":"이상형",
+    "academy":"학력"
+} 
 const getUsers = async (data) => {
     let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     let [rows] = await userStore.getUsers(data);
-    rows = rows.length > 0 ? await getUserListImages(rows) : {};  
+    rows = rows.length > 0 ? await getUserListImages(rows) : rows;  
+    rows = rows.length > 0 ? await getUserProfile(rows) : rows;  
     responseObj.result = rows;
     poolConnection.release();
 
@@ -88,6 +95,24 @@ const getUserListImages = async (userList) => {
             }
         });
         user.images = imageArr;
+    });
+    return userList;
+};
+
+const getUserProfile = async (userList) => {
+    const [rows] = await userStore.getUserProfile(userList);
+    userList.forEach(user => {
+        let userDetailInfo = new Array();
+        rows.forEach(userProfile => {
+            if(user.user_id == userProfile.user_id) {
+                for (const key in userProfile) {
+                    userDetailInfo.push({
+                            "title" : profileTitle[key]
+                            ,"value" : userProfile[key]});
+                }
+            }
+        });
+        user.detail_info = userDetailInfo;
     });
     return userList;
 };

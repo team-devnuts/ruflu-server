@@ -27,6 +27,21 @@ User.prototype.getUserListImages = async (data) => {
     const result = await this.poolConnection.query(query);
     return result;
 }
+User.prototype.getUserProfile = async (data) => {
+    let query = userQueryStore.selectUserProfile;
+    let bindData = [];
+    for (const key in data) {
+        query += "?"
+        bindData[key] = data[key].user_id
+        if(key != (data.length-1))
+            query += ","
+        else query += ""
+    }
+    query += ")";
+    query = mysql.format(query, bindData);
+    const result = await this.poolConnection.query(query);
+    return result;
+}
 User.prototype.insertHateUser = async (data) => {
     const count = await this.poolConnection.query(userQueryStore.insertHateUser, data);
     return count;
