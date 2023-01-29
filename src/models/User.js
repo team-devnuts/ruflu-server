@@ -2,18 +2,17 @@
 const mysql = require('mysql');
 const userQueryStore = require(process.env.PWD + '/src/models/userQuery');
 
-function User() {
-    
-}
+function User() {}
+
 User.prototype.setConnectionPool = (poolConnection) => {
     this.poolConnection = poolConnection;
 };
-User.prototype.getUserList = async (data) => {
+User.prototype.getUsers = async (data) => {
     //const connection = await pool.getConnection(async conn => conn);
     const result = this.poolConnection.query(userQueryStore.selectUserCardList, data);
     return result;
 }
-User.prototype.selectUserListImages = async (data) => {
+User.prototype.getUserListImages = async (data) => {
     let query = userQueryStore.selectUserAlbum;
     let bindData = [];
     for (const key in data) {
@@ -41,7 +40,7 @@ User.prototype.insertMatchUser = async (data) => {
     const count = await this.poolConnection.query(userQueryStore.insertMatchUser, data);
     return count;
 }
-User.prototype.selectLikeMeUser = async(data) => {
+User.prototype.selectLikeMeUser = async (data) => {
     const result = await this.poolConnection.query(userQueryStore.selectLikeMeUser, data);
     return result;
 }

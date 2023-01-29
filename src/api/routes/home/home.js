@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const logger = require(process.env.PWD + '/src/loaders/logger');
+const logger = require('../../../loaders/logger');
 const request = require('request');
-const controller = require(process.env.PWD + '/src/controller/homeController');
+const controller = require('../../../controller/homeController');
 
 module.exports = async (app) => {
     app.use('/home', router);
-    // 라우터의 get 함수 를 이용해 request url에 대한 업무처리 로직 정의
+
     router.get('/', function(req, res, next) {
         res.json({state:200})
     });
     
-    router.get("/userCardList" , async (req,res) => {
-        res.json(await controller.getCards(req, res))          
+    router.get("/users" , async (req,res) => {
+        res.json(await controller.getUsers(req, res))          
     });
     
     router.post("/ins/hate" , async function(req,res) {
@@ -34,13 +34,6 @@ module.exports = async (app) => {
                 logger.info(error)
             });
         }
-            /*
-            fetch("/alarm/push/like", {
-                method: 'post',
-                body: JSON.stringify({
-                    to_user_id: '1'
-                })});
-                */
         
     });
     

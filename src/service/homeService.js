@@ -3,11 +3,11 @@ const database = require(process.env.PWD + '/src/loaders/database');
 const userStore = require('../models/User');
 const logger = require(process.env.PWD + '/src/loaders/logger');
 
-const getCards = async (data) => {
+const getUsers = async (data) => {
     const poolConnection = await database.getPoolConection();
-    userStore.setConnectionPool(poolConnection)
-    let [rows] = await userStore.getUserList(data);
-    rows = rows.length > 0 ? await getCardImages(rows) : {};   
+    userStore.setConnectionPool(poolConnection);
+    let [rows] = await userStore.getUsers(data);
+    rows = rows.length > 0 ? await getUserListImages(rows) : {};   
     poolConnection.release();
     return rows;
 };
@@ -72,21 +72,22 @@ const addUserInMyMatchList = async (data) => {
     return result > 0 ? "success" : "";
 }
 
-const getCardImages = async (userList) => {
-    const [rows] = await userStore.selectUserListImages(userList);
+const getUserListImages = async (userList) => {
+    const [rows] = await userStore.getUserListImages(userList);
     userList.forEach(user => {
         console.log(user);
         let imageArr = new Array();
         rows.forEach(userAlbum => {
             if(user.user_id == userAlbum.user_id) {
-                imageArr.push(userAlbum.atch_file_path_nm);
+                //imageArr.push(`${userAlbum.image_file_path}/${userAlbum.image_file_name}`);
+                imageArr.push(`${userAlbum.image_file_name}`);
             }
         });
         user.images = imageArr;
     });
     return userList;
 };
-exports.service = {getCards, addHateUser
+exports.service = {getUsers, addHateUser
     , addLikeUser, getLikeMeList
     , getUserMatchedWithMeList
     , addUserInMyMatchList}

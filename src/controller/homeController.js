@@ -1,10 +1,12 @@
 "use strict";
+const logger = require('../loaders/logger');
 const {service} = require('../service/homeService');
 
-const getCards = async (req, res) => {
+const getUsers = async (req, res) => {
     const userId = req.get("user_id");
-    const data = {"userId" : userId};
-    return await service.getCards(data);
+    logger.info(`user_id : ${userId}`)
+    const data = {"user_id" : userId};
+    return await service.getUsers(data);
 };
 
 const addHateUser = async (req, res) => {
@@ -40,7 +42,7 @@ const addUserInMyMatchList = (req, res) => {
 };
 
 module.exports = {
-    getCards
+    getUsers
     ,addHateUser
     ,addLikeUser
     ,getLikeMeList
