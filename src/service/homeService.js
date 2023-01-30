@@ -14,13 +14,11 @@ const getUsers = async (data) => {
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     let [rows] = await userStore.getUsers(data);
-    rows = rows.length > 0 ? await getUserListImages(rows) : rows;  
-    rows = rows.length > 0 ? await getUserProfile(rows) : rows;  
-    responseObj.result = rows;
+    //rows = rows.length > 0 ? await getUserProfile(rows) : rows;  
+    responseObj.result = rows.length > 0 ? await getUserListImages(rows) : rows;  
     poolConnection.release();
 
-    logger.info(responseObj);
-    console.log(responseObj);
+    logger.info(responseObj.result[0].images);
     return responseObj;
 };
 
@@ -91,7 +89,7 @@ const getUserListImages = async (userList) => {
         rows.forEach(userAlbum => {
             if(user.user_id == userAlbum.user_id) {
                 //imageArr.push(`${userAlbum.image_file_path}/${userAlbum.image_file_name}`);
-                imageArr.push(`${userAlbum.image_file_name}`);
+                imageArr.push({"images": userAlbum.image_file_name});
             }
         });
         user.images = imageArr;
@@ -101,7 +99,7 @@ const getUserListImages = async (userList) => {
 
 const getUserProfile = async (userList) => {
     const [rows] = await userStore.getUserProfile(userList);
-    userList.forEach(user => {
+    /*userList.forEach(user => {
         let userDetailInfo = new Array();
         rows.forEach(userProfile => {
             if(user.user_id == userProfile.user_id) {
@@ -113,6 +111,18 @@ const getUserProfile = async (userList) => {
             }
         });
         user.detail_info = userDetailInfo;
+    });
+    */
+    userList.map((value, index, array) => {
+        array[index].detail_info = 
+        rows.filter(word => word.user_id == value.user_id)
+            .map((value) => {
+                for(const key in profileTitle){
+                    return {"title" : profileTitle[key]
+                            ,"value" : value[key]}   
+                }
+            });
+        logger.info(array[index].detail_info);
     });
     return userList;
 };
