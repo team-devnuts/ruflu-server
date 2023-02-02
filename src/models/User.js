@@ -1,6 +1,6 @@
 'use strict';
 const mysql = require('mysql');
-const userQueryStore = require(process.env.PWD + '/src/models/userQuery');
+const userQueryStore = require('./userQuery');
 
 function User() {}
 
@@ -56,8 +56,7 @@ User.prototype.insertMatchUser = async (data) => {
     return count;
 }
 User.prototype.selectLikeMeUser = async (data) => {
-    const result = await this.poolConnection.query(userQueryStore.selectLikeMeUser, data);
-    return result;
+    return await this.poolConnection.query(userQueryStore.selectLikeMeUser, data);
 }
 User.prototype.selectLikeMeList = async (data) => {
     const result = await this.poolConnection.query(userQueryStore.selectLikeMeList, data);   

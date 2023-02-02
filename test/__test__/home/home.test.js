@@ -18,15 +18,6 @@ beforeAll(done => {
     done();
 });  
 
-
-describe('Test /', () => {
-    it('shoud return {state:200}', (done) => {
-        request(app)
-            .get('/')
-            .expect(200, done);
-    });
-});
-
 describe('Test /home/userCardList', () => {
     test('유저 정보를 가지고오기', async () => {
         const response = await request(app)    

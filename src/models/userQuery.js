@@ -1,7 +1,11 @@
 let json = {
     selectUserCardList : 
     `SELECT 
-        A.user_id, A.nick_name, A.birth, B.location_latitude, B.location_longitude 
+        A.user_id
+        , A.nick_name
+        , A.birth
+        , B.location_latitude as latitude
+        , B.location_longitude as longtitude
      FROM user_profile_info A
         LEFT JOIN user_info B
         ON A.user_id = B.user_id
@@ -21,16 +25,16 @@ let json = {
     LIMIT 49
      `,
     insertHateUser : 
-    `INSERT INTO 
-        hate_info (user_id, other_user_id, registration_date) 
+    `INSERT INTO hate_info 
+        (user_id, other_user_id, use_yn, registration_date) 
     values 
-    (:user_id,other_user_id,NOW())
+        (:user_id, other_user_id, '1', NOW())
     `,
     insertLikeUser :
-    `INSERT INTO ruflu_lv1_like_info 
-    (user_id, other_user_id, reg_dtm) 
+    `INSERT INTO like_info 
+        (user_id, other_user_id, use_yn, registeration_date) 
     values 
-    (:user_id,:other_user_id,NOW())
+        (:user_id,:other_user_id, '1', NOW())
     `,
     selectNbUserlist : 
     `SELECT 
@@ -81,81 +85,112 @@ let json = {
     `,
     selectLikeMeList:
     `SELECT
-        A.to_user_id
+        A.user_id
         ,A.other_user_id
         ,B.nick_name
         ,B.gender
         ,B.birth
-        ,C.loca_latitude
-        ,C.loca_longitude
+        ,C.location_latitude as latitude 
+        ,C.location_longitude as longtitude
+        ,D.image_file_name as images
      FROM like_info A
         JOIN user_profile_info B
-            ON A.to_user_id = B.user_id
+            ON A.other_user_id = B.user_id
         JOIN user_info C
-            ON A.to_user_id = C.user_id
-     WHERE A.other_user_id = :other_user_id
+            ON A.other_user_id = C.user_id
+        JOIN (
+            SELECT 
+                user_id
+                ,image_file_name
+                ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
+            FROM user_album_info
+            WHERE use_yn = '1'
+        ) D
+            ON A.user_id = D.user_id
+            AND rnum = '1'
+     WHERE A.other_user_id = :user_id
+    `,
+    selectLikeMeUser:
+    `SELECT
+        A.other_user_id as user_id
+        ,B.nick_name
+        ,B.birth
+        ,C.location_latitude as latitude
+        ,C.location_longitude as longitude
+     FROM like_info A
+        LEFT JOIN user_profile_info B
+            ON A.other_user_id = B.user_id
+        LEFT JOIN user_info C
+            ON A.other_user_id = C.user_id
+     WHERE A.other_user_id = :user_id
+       AND A.user_id = :other_user_id
+    `,
+    selectMatchUser: 
+    `SELECT
+        A.user_id
+        ,B.user_id
+     FROM ruflu_lv1_like_info A
+        JOIN ruflu_lv1_like_info B
+          ON B.user_id = :userId
+          AND A.to_user_id = B.user_id
+     WHERE A.user_id = :userId
+       AND A.user_id = B.to_user_id
     `,
     insertMatchUser:
     `
-    INSER INTO ruflu_lv2_like_info
-    (user2_id, user1_id, reg_dtm, chg_dtm)
+    INSERT INTO match_info
+    (user_id, other_user_id, use_yn, registration_date)
     VALUES
-    (:userId, :toUserId, NOW(), NOW())
+    (:user_id, :other_user_id, '1', NOW())
     `,
     selectMatchList:
     `SELECT
-        A.user2_id
-        ,B.nick_nm
-        ,B.gender
+        A.user_id
+        ,B.nick_name
         ,B.birth
-        ,B.wei
-        ,B.hei
-        ,B.occu
-        ,B.occu_dtl
-        ,B.rlgn
-        ,B.alch
-        ,B.fancy
-        ,B.intd
-        ,B.qa1
-        ,B.repl1
-        ,B.qa2
-        ,B.repl2
-        ,B.hob
-        ,C.loca_latitude
-        ,C.loca_longitude
-     FROM ruflu_lv2_like_info A
+        ,C.location_latitude AS latitude
+        ,C.location_longitude AS longitude
+        ,D.image_file_name as images
+     FROM match_info A
         LEFT JOIN user_profile_info B
-            ON A.user2_id = B.user_id
-        LEFT JOIN user_live_info C
-            ON A.user2_id = C.user_id
-     WHERE A.user1_id = ?
+            ON A.other_user_id = B.user_id
+        LEFT JOIN user_info C
+            ON A.other_user_id = C.user_id
+        LEFT JOIN (
+                SELECT 
+                    user_id
+                    ,image_file_name
+                    ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
+                FROM user_album_info
+                WHERE use_yn = '1'
+            ) D
+            ON A.other_user_id = D.user_id
+            AND rnum = '1'
+     WHERE A.other_user_id = :user_id
      UNION ALL
      SELECT
-        A.user1_id
-        ,B.nick_nm
-        ,B.gender
+        A.other_user_id AS user_id
+        ,B.nick_name
         ,B.birth
-        ,B.wei
-        ,B.hei
-        ,B.occu
-        ,B.occu_dtl
-        ,B.rlgn
-        ,B.alch
-        ,B.fancy
-        ,B.intd
-        ,B.qa1
-        ,B.repl1
-        ,B.qa2
-        ,B.repl2
-        ,B.hob
-        ,C.loca_latitude
-        ,C.loca_longitude
-     FROM ruflu_lv2_like_info A
+        ,C.location_latitude AS latitude
+        ,C.location_longitude AS longitude
+        ,D.image_file_name as images
+     FROM match_info A
         LEFT JOIN user_profile_info B
-            ON A.user1_id = B.user_id
-        LEFT JOIN user_live_info C
-            ON A.user1_id = C.user_id
-     WHERE A.user2_id = ?
+            ON A.user_id = B.user_id
+        LEFT JOIN user_info C
+            ON A.other_user_id = C.user_id
+        LEFT JOIN (
+                SELECT 
+                    user_id
+                    ,image_file_name
+                    ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
+                FROM user_album_info
+                WHERE use_yn = '1'
+            ) D
+            ON A.user_id = D.user_id
+            AND rnum = '1'
+     WHERE A.user_id = :user_id
     `,
 }
 
