@@ -8,18 +8,27 @@ const profileTitle = {
     "job":"직업",
     "fancy":"이상형",
     "academy":"학력"
-} 
+}
 
 const getUsers = async (data) => {
     let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
-    let [rows] = await userStore.getUsers(data);
-    //rows = rows.length > 0 ? await getUserProfile(rows) : rows;  
+    let [rows] = await userStore.getUsers(data);  
     responseObj.result = rows.length > 0 ? await getUserListImages(rows) : rows;  
     poolConnection.release();
-
     logger.info(responseObj.result);
+    return responseObj;
+};
+
+const getUserDetail = async (data) => {
+    let responseObj = {"code": "200", "message": "><"};
+    const poolConnection = await database.getPoolConection();
+    userStore.setConnectionPool(poolConnection);
+    let [rows] = await userStore.selectUserDetail(data);
+    //rows = rows.length > 0 ? await getUserProfile(rows) : rows;
+    responseObj.result = rows.length > 0 ? await getUserListImages(rows) : rows;  
+    poolConnection.release();
     return responseObj;
 };
 
@@ -32,10 +41,6 @@ const addHateUser = async (data) => {
     poolConnection.release();
     return count > 0 ? "success" : "";
 };
-
-
-
-
 
 const getUserListImages = async (userList) => {
     const [rows] = await userStore.getUserListImages(userList);
@@ -54,20 +59,7 @@ const getUserListImages = async (userList) => {
 
 const getUserProfile = async (userList) => {
     const [rows] = await userStore.getUserProfile(userList);
-    /*userList.forEach(user => {
-        let userDetailInfo = new Array();
-        rows.forEach(userProfile => {
-            if(user.user_id == userProfile.user_id) {
-                for (const key in userProfile) {
-                    userDetailInfo.push({
-                            "title" : profileTitle[key]
-                            ,"value" : userProfile[key]});
-                }
-            }
-        });
-        user.detail_info = userDetailInfo;
-    });
-    */
+
     userList.map((value, index, array) => {
         array[index].detail_info = 
         rows.filter(word => word.user_id == value.user_id)
@@ -81,7 +73,9 @@ const getUserProfile = async (userList) => {
     });
     return userList;
 };
+
 exports.service = {
       getUsers
     , addHateUser
+    , getUserDetail
 }

@@ -11,7 +11,7 @@ module.exports = async ( {app} ) => {
     app.use(express.static(config.imageDIR));
     app.use(config.api.prefix, await router())
 
-    app.get("/", async function(req,res) {
+    app.get("/", async (req,res) => {
         res.json({state:200});
     });
 

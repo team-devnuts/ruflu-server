@@ -7,11 +7,11 @@ function User() {}
 User.prototype.setConnectionPool = (poolConnection) => {
     this.poolConnection = poolConnection;
 };
+
 User.prototype.getUsers = async (data) => {
-    //const connection = await pool.getConnection(async conn => conn);
-    const result = this.poolConnection.query(userQueryStore.selectUserCardList, data);
-    return result;
-}
+    return this.poolConnection.query(userQueryStore.selectUserCardList, data);
+};
+
 User.prototype.getUserListImages = async (data) => {
     let query = userQueryStore.selectUserAlbum;
     let bindData = [];
@@ -26,7 +26,8 @@ User.prototype.getUserListImages = async (data) => {
     query = mysql.format(query, bindData);
     const result = await this.poolConnection.query(query);
     return result;
-}
+};
+
 User.prototype.getUserProfile = async (data) => {
     let query = userQueryStore.selectUserProfile;
     let bindData = [];
@@ -41,30 +42,39 @@ User.prototype.getUserProfile = async (data) => {
     query = mysql.format(query, bindData);
     const result = await this.poolConnection.query(query);
     return result;
-}
+};
+
 User.prototype.insertHateUser = async (data) => {
     const count = await this.poolConnection.query(userQueryStore.insertHateUser, data);
     return count;
-}
+};
+
 User.prototype.insertLikeUser = async (data) => {
     const count = await this.poolConnection.query(userQueryStore.insertLikeUser, data);
     return count;
-}
-User.prototype.insertMatchUser = async (data) => {
+};
 
+User.prototype.insertMatchUser = async (data) => {
     const count = await this.poolConnection.query(userQueryStore.insertMatchUser, data);
     return count;
-}
+};
+
 User.prototype.selectLikeMeUser = async (data) => {
     return await this.poolConnection.query(userQueryStore.selectLikeMeUser, data);
-}
+};
+
 User.prototype.selectLikeMeList = async (data) => {
     const result = await this.poolConnection.query(userQueryStore.selectLikeMeList, data);   
     return result;
-}
+};
+
 User.prototype.selectMatchList = async (data) => {
     const result = await this.poolConnection.query(userQueryStore.selectMatchList, data);
     return result;
+};
+
+User.prototype.selectUserDetail = async (data) => {
+    return await this.poolConnection.query(userQueryStore.selectUserDetail, data);
 }
 
 module.exports = new User();

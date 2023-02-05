@@ -5,7 +5,7 @@ let json = {
         , A.nick_name
         , A.birth
         , B.location_latitude as latitude
-        , B.location_longitude as longtitude
+        , B.location_longitude as longitude
      FROM user_profile_info A
         LEFT JOIN user_info B
         ON A.user_id = B.user_id
@@ -26,43 +26,15 @@ let json = {
      `,
     insertHateUser : 
     `INSERT INTO hate_info 
-        (user_id, other_user_id, use_yn, registration_date) 
+        (user_id, other_user_id, registeration_date) 
     values 
-        (:user_id, other_user_id, '1', NOW())
+        (:user_id, other_user_id, NOW())
     `,
     insertLikeUser :
     `INSERT INTO like_info 
         (user_id, other_user_id, use_yn, registeration_date) 
     values 
         (:user_id,:other_user_id, '1', NOW())
-    `,
-    selectNbUserlist : 
-    `SELECT 
-        A.user_id
-        ,B.loca_latitude
-        ,B.loca_longitude
-        ,A.nick_name
-        ,A.gender
-        ,birth
-        ,hei
-        ,occu
-        ,fancy
-        ,B.distance
-    FROM user_profile_info A
-        JOIN 
-        (
-            SELECT 
-                A.user_id,
-                A.loca_latitude,
-                A.loca_longitude,
-                (6371*acos(cos(radians(?))*cos(radians(A.loca_latitude))*cos(radians(A.loca_longitude) 
-                - radians(?))+sin(radians(?))*sin(radians(A.loca_latitude)))) AS distance 
-            FROM user_info A
-                LEFT JOIN nb_lv1_like_info B
-                ON A.user_id != B.user_id
-            HAVING distance <= 2 
-        ) B
-        ON A.user_id = B.user_id
     `,
     selectUserAlbum:
     `SELECT
@@ -192,6 +164,22 @@ let json = {
             AND rnum = '1'
      WHERE A.user_id = :user_id
     `,
+    selectUserDetail:
+    `SELECT 
+        A.user_id
+        ,B.nick_name
+        ,B.gender
+        ,B.birth
+        ,B.height
+        ,B.job
+        ,B.fancy
+        ,A.location_latitude AS latitude 
+        ,A.location_longitude AS longitude
+    FROM user_info A
+        JOIN user_profile_info B
+        ON A.user_id = B.user_id
+    WHERE A.user_id = :user_id
+    `
 }
 
 module.exports = json

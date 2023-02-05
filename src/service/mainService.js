@@ -6,7 +6,7 @@ const logger = require(process.env.PWD + '/src/loaders/logger');
 const updateLocation = async (data) => {
     const poolConnection = await database.getPoolConection();
     mainStore.setConnectionPool(poolConnection);
-    await poolConnection.beginTracsaction();
+    await poolConnection.beginTracsaction(); 
     const result = mainStore.updateLocation(data);
     await poolConnection.commit();
     poolConnection.release();
@@ -23,6 +23,6 @@ const updateToken = async (data) => {
     return count > 0 ? 'success' : '';
 };
 
-module.exports = {
+exports.service = {
     updateLocation, updateToken
 };

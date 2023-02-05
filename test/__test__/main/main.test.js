@@ -3,6 +3,7 @@ const config = require('../../../src/config');
 const app = require('../../../index')
 const { pool } = require('../../../src/loaders/database');
 const logger = require('../../../src/loaders/logger');
+const { service } = require('../../../src/service/userService');
 
 // 서버 open
 const server = app.listen(config.port, function(){
@@ -18,13 +19,10 @@ beforeAll(done => {
     done();
 });  
 
-describe('Test /home/userCardList', () => {
-    test('유저 정보를 가지고오기', async () => {
-        const response = await request(app)    
-            .get('/api/home/users')
-            .set('user_id', 1)
-        expect(response.status).toBe(200);
-        logger.info(response.body);
+describe('Test /main/user', () => {
+    test('유저 세부정보 가져오기', async () => {
+        const user = await service.getUserDetail({"user_id": "12"});
+        logger.debug(user.result);
     });
 });
 

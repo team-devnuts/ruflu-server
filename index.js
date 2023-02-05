@@ -7,6 +7,7 @@ const app = express();
 // 채팅 실시간 처리 구현
 // 1. socket 연결이 안되었을때
 // 1. 1:1 매칭 할 때 room_no 기억하기
+
 /*
 const socketIO = require('socket.io');
 //const io = socketIO(server);

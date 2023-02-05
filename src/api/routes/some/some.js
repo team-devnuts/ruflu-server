@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const controller = require('../../../controller/likeController');
+const controller = require('../../../controller/someController');
 const request = require('request');
 const logger = require('../../../loaders/logger');
 
