@@ -33,7 +33,7 @@ describe('Test /some/like', () => {
 describe('Test getLikeMe', ()=> {
     test('like 정보 가져오기', async () => {
         const list = await service.getLikeMeList({user_id: "2"});
-        logger.info(list);
+        logger.info(list.code);
     });
 });
 
@@ -41,7 +41,7 @@ describe('Test getLikeMe', ()=> {
 describe('Test getMatchList', ()=> {
     test('match 정보 가져오기', async () => {
         const list = await service.getUserMatchedWithMeList({"user_id": "2"});
-        logger.info(list);
+        //logger.info(list);
     });
 });
 

@@ -5,6 +5,7 @@ const userStore = require('../models/User');
 
 
 const getLikeMeList = async (data) => {
+    let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     let [rows] = await userStore.selectLikeMeList(data);
@@ -12,8 +13,9 @@ const getLikeMeList = async (data) => {
     rows.forEach(user => {
         user.images = [{"image" : user.images}];
     });
+    responseObj.result = rows;
     poolConnection.release();
-    return rows;
+    return responseObj;
 };
 
 const addLikeUser = async (data) => {
@@ -41,14 +43,16 @@ const addLikeUser = async (data) => {
 };
 
 const getUserMatchedWithMeList = async (data) => {
+    let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     const [rows] = await userStore.selectMatchList(data);
     rows.forEach(user => {
         user.images = [{"image" : user.images}];
     });
+    responseObj.result = rows;
     poolConnection.release();
-    return rows;
+    return responseObj;
 };
 
 const addUserInMyMatchList = async (data) => {
