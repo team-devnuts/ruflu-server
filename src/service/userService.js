@@ -25,8 +25,8 @@ const getUserDetail = async (data) => {
     let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
-    let [rows] = await userStore.selectUserDetail(data);
-    //rows = rows.length > 0 ? await getUserProfile(rows) : rows;
+    let [rows] = await userStore.selectUser(data);
+    rows = rows.length > 0 ? await getUserProfile(rows) : rows;
     responseObj.result = rows.length > 0 ? await getUserListImages(rows) : rows;  
     poolConnection.release();
     return responseObj;

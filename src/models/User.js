@@ -73,8 +73,8 @@ User.prototype.selectMatchList = async (data) => {
     return result;
 };
 
-User.prototype.selectUserDetail = async (data) => {
-    return await this.poolConnection.query(userQueryStore.selectUserDetail, data);
+User.prototype.selectUser = async (data) => {
+    return await this.poolConnection.query(userQueryStore.selectUser, data);
 }
 
 module.exports = new User();

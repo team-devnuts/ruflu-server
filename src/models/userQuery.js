@@ -164,15 +164,11 @@ let json = {
             AND rnum = '1'
      WHERE A.user_id = :user_id
     `,
-    selectUserDetail:
+    selectUser:
     `SELECT 
         A.user_id
         ,B.nick_name
-        ,B.gender
         ,B.birth
-        ,B.height
-        ,B.job
-        ,B.fancy
         ,A.location_latitude AS latitude 
         ,A.location_longitude AS longitude
     FROM user_info A
