@@ -8,12 +8,13 @@ let json = {
     `,
     updateUserLocation:
     `
-    UPDATE user_live_info SET
+    UPDATE user_info SET
         loca_latitude = :latitude
         ,loca_longitude = :longitude
-    WHERE user_id = :userId
+    WHERE user_id = :user_id
     `
-}
+    
+};
 
 
-module.exports = json
+module.exports = json;

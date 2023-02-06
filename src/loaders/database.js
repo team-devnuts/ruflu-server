@@ -22,6 +22,8 @@ pool.on('enqueue', function () {
 pool.on('release', function (connection) {
     logger.info(`Connection ${connection.threadId} released`);
 });
+
+
 /*
 const pool = connectionDB({
     host: config.databaseHOST,
@@ -40,8 +42,6 @@ const getPoolConection = async () => {
     connection.on('error', handledErr);
     return connection;
 }
-
-
 
 function queryFormat(query, values) {
     if (!values) return query;

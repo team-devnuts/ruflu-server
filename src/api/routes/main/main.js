@@ -12,8 +12,12 @@ module.exports = (app) => {
     router.post("/loca/udt", async (req, res, next) => {
         res.json(await controller.updateLocation(req, res));
     });
-    
+
     router.post("/token/udt", async (req, res, next) => {
         res.json(await controller.updateToken(req, res));
+    });
+        
+    router.get("/user", async (req, res) => {
+        res.json(await controller.getUserDetail(req, res));
     });
 }

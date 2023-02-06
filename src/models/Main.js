@@ -1,8 +1,8 @@
-const mainQueryStore = require(process.env.PWD + '/src/models/mainQuery');
+'use strict';
 
-function Main() {
+const mainQueryStore = require('./mainQuery');
 
-}
+function Main() {}
 
 Main.prototype.setConnectionPool = (poolConnection) => {
     this.poolConnection = poolConnection;

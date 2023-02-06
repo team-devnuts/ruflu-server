@@ -1,8 +1,8 @@
 const request = require('supertest');
-const config = require('../../src/config');
-const app = require('../../index')
-const { pool } = require('../../src/loaders/database');
-const logger = require('../../src/loaders/logger');
+const config = require('../../../src/config');
+const app = require('../../../index')
+const { pool } = require('../../../src/loaders/database');
+const logger = require('../../../src/loaders/logger');
 
 // 서버 open
 const server = app.listen(config.port, function(){
@@ -17,15 +17,6 @@ const server = app.listen(config.port, function(){
 beforeAll(done => {
     done();
 });  
-
-
-describe('Test /', () => {
-    it('shoud return {state:200}', (done) => {
-        request(app)
-            .get('/')
-            .expect(200, done);
-    });
-});
 
 describe('Test /home/userCardList', () => {
     test('유저 정보를 가지고오기', async () => {
