@@ -1,5 +1,6 @@
 const express = require('express');
 const loaders = require('./src/loaders');
+const exceptionHandler = require('./src/middleware/exception-handler');
 const app = express();
 
 //const require  = require('app-root-path');
@@ -34,6 +35,7 @@ io.on("connection", (socket) => {
 */
 
 (async () => {
+    app.use(exceptionHandler());
     await loaders({ expressApp: app });
 })();
 

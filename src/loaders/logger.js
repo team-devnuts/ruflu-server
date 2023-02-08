@@ -8,8 +8,6 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
   return `${timestamp} [${label}] ${level}: ${message}`;
 });
 
-
-
 const options = {
   file: { 
     // 로그 파일 저장시... 작성
