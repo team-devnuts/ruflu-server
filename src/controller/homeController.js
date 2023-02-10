@@ -1,12 +1,12 @@
 "use strict";
+const { response } = require('../..');
 const logger = require('../loaders/logger');
 const {service} = require('../service/userService');
 
 const getUsers = async (req, res) => {
-    const userId = req.get("user_id");
-    logger.info(`user_id : ${userId}`);
-    const data = {"user_id" : userId};
-    return await service.getUsers(data);
+    const data = {"user_id" : req.get("user_id")};
+    req.responseObject.result = await service.getUsers(data);
+    return req.responseObject;
 };
 
 const addHateUser = async (req, res) => {
