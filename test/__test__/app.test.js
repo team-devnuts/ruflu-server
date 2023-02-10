@@ -18,7 +18,9 @@ beforeAll(done => {
     done();
 });  
 
+class Test {
 
+}
 describe('Test /', () => {
     it('shoud return {state:200}', (done) => {
         request(app)

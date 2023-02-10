@@ -11,14 +11,12 @@ const profileTitle = {
 }
 
 const getUsers = async (data) => {
-    let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     let [rows] = await userStore.getUsers(data);  
-    responseObj.result = rows.length > 0 ? await getUserListImages(rows) : rows;  
+    const result = rows.length > 0 ? await getUserListImages(rows) : rows;  
     poolConnection.release();
-    logger.info(responseObj.result);
-    return responseObj;
+    return result;
 };
 
 const getUserDetail = async (data) => {

@@ -2,8 +2,6 @@
 const database = require('../loaders/database');
 const userStore = require('../models/User');
 
-
-
 const getLikeMeList = async (data) => {
     let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
