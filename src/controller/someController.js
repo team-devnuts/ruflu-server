@@ -6,25 +6,26 @@ const { service } = require('../service/likeService');
 const addLikeUser = async (req, res) => {
     const {other_user_id} = req.body;
     let data = {"user_id": req.get("user_id"), other_user_id};
-    req.responseObject.result = await service.addLikeUser(data);
+    await service.addLikeUser(data);
     return req.responseObject;
 };
 
 const getLikeMeList = async (req, res) => {
-    const data = {"user_id": req.get("user_id")}
-    return await service.getLikeMeList(data);
-};
-
-const getUserMatchedWithMeList =  (req, res) => {
-    const data  = {"user_id": req.get("user_id")};
-    req.responseObject.result = service.getUserMatchedWithMeList(data);
+    const data = {"user_id": req.get("user_id")};
+    req.responseObject = await service.getLikeMeList(data);
     return req.responseObject;
 };
 
-const addUserInMyMatchList = (req, res) => {
+const getUserMatchedWithMeList = async (req, res) => {
+    const data = {"user_id": req.get("user_id")};
+    req.responseObject.result = await service.getUserMatchedWithMeList(data);
+    return req.responseObject;
+};
+
+const addUserInMyMatchList = async (req, res) => {
     const {other_user_id} = req.body;
-    const data  = {"user_id": req.get("user_id"), other_user_id};
-    req.responseObject = service.addUserInMyMatchList(data);
+    const data = {"user_id": req.get("user_id"), other_user_id};
+    await service.addUserInMyMatchList(data);
     return req.responseObject;
 };
 
