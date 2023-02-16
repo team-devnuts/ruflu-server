@@ -14,8 +14,7 @@ admin.initializeApp({
 module.exports = (app) => {
     app.use('/alarm', router);
 
-    router.post("/push/msg" , function(req,res) {
-        console.log("연결 성공!!!!");
+    router.post("/push/msg" , async (req,res) => {
         let ret = "";
         //db_config.connect(conn);
         console.log(req.body.to_user_id);

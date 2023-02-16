@@ -1,6 +1,6 @@
 'use strict';
 
-const mainQueryStore = require('./mainQuery');
+const mainQueryStore = require('./main-query');
 
 function Main() {}
 

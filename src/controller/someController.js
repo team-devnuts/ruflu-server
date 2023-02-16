@@ -1,7 +1,7 @@
 "use strict";
 
 const logger = require('../loaders/logger');
-const { service } = require('../service/likeService');
+const { service } = require('../service/some-service');
 
 const addLikeUser = async (req, res) => {
     const {other_user_id} = req.body;

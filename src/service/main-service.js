@@ -1,6 +1,6 @@
 "use strict";
 const database = require(process.env.PWD + '/src/loaders/database');
-const mainStore = require('../models/Main');
+const mainStore = require('../models/main-model');
 const logger = require(process.env.PWD + '/src/loaders/logger');
 
 const updateLocation = async (data) => {

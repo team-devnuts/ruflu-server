@@ -1,6 +1,6 @@
 "use strict";
 const logger = require('../loaders/logger');
-const {service} = require('../service/userService');
+const {service} = require('../service/user-service');
 
 const getUsers = async (req, res) => {
     const data = {"user_id" : req.get("user_id")};
