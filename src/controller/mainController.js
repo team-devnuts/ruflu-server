@@ -1,5 +1,5 @@
-const {mainService} = require('../service/main-service');
-const {userService} = require('../service/user-service');
+const { mainService } = require("../service/main-service");
+const {service} = require('../service/user-service');
 
 const updateLocation = async (req, res) => {
     const {latitude, longitude} = req.body;
@@ -17,7 +17,8 @@ const updateToken = async (req, res) => {
 };
 
 const getUserDetail = async (req, res) => {
-    req.responseObject.result = await userService.getUserDetail({"user_id": req.param.user_id});
+    console.log(req.body)
+    req.responseObject.result = await service.getUserDetail({"user_id": req.param.user_id});
     return req.responseObject;
 };
 

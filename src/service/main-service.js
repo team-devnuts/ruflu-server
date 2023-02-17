@@ -23,6 +23,6 @@ const updateToken = async (data) => {
     return count > 0 ? 'success' : '';
 };
 
-exports.service = {
+exports.mainService = {
     updateLocation, updateToken
 };
