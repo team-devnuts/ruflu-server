@@ -20,15 +20,13 @@ const getUsers = async (data) => {
 };
 
 const getUserDetail = async (data) => {
-    let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     let [rows] = await userStore.selectUser(data);
     rows = rows.length > 0 ? await getUserProfile(rows) : rows;
     rows = rows.length > 0 ? await getUserListImages(rows) : rows;  
-    responseObj.result = rows[0];
     poolConnection.release();
-    return responseObj;
+    return rows[0];
 };
 
 const addHateUser = async (data) => {
