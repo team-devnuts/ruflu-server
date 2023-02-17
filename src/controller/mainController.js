@@ -17,8 +17,7 @@ const updateToken = async (req, res) => {
 };
 
 const getUserDetail = async (req, res) => {
-    console.log(req.body)
-    req.responseObject.result = await service.getUserDetail({"user_id": req.param.user_id});
+    req.responseObject.result = await service.getUserDetail({"user_id": req.params.user_id});
     return req.responseObject;
 };
 

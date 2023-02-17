@@ -18,7 +18,7 @@ module.exports = (app) => {
         res.json(await controller.updateToken(req, res));
     }); 
         
-    router.get("/user", async (req, res) => {
+    router.get("/user/:user_id", async (req, res) => {
         res.json(await controller.getUserDetail(req, res));
     });
 }
