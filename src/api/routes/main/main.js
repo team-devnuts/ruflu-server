@@ -10,11 +10,11 @@ module.exports = (app) => {
         res.json({state:200});
     });
     
-    router.post("/loca/udt", async (req, res, next) => {
+    router.post("/location", async (req, res, next) => {
         res.json(await controller.updateLocation(req, res));
     });
 
-    router.post("/token/udt", async (req, res, next) => {
+    router.post("/alarm", async (req, res, next) => {
         res.json(await controller.updateToken(req, res));
     }); 
         

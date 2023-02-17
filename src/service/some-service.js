@@ -41,16 +41,14 @@ const addLikeUser = async (data) => {
 };
 
 const getUserMatchedWithMeList = async (data) => {
-    let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     const someStore = new Some(poolConnection);
     const [rows] = await someStore.selectMatchList(data);
     rows.forEach(user => {
         user.images = [{"image" : user.images}];
     });
-    responseObj.result = rows;
     poolConnection.release();
-    return responseObj;
+    return rows;
 };
 
 const addUserInMyMatchList = async (data) => {
