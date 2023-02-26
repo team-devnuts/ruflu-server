@@ -3,14 +3,14 @@ let json = {
     `
     UPDATE user_info SET
         alarm_token = :token
-        ,chg_dtm = NOW()
-    WHERE user_id = :userId
+        ,modification_date = NOW()
+    WHERE user_id = :user_id
     `,
     updateUserLocation:
     `
     UPDATE user_info SET
-        loca_latitude = :latitude
-        ,loca_longitude = :longitude
+        location_latitude = :latitude
+        ,location_longitude = :longitude
     WHERE user_id = :user_id
     `
     
