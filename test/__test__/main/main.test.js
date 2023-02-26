@@ -4,6 +4,7 @@ const app = require('../../../index')
 const { pool } = require('../../../src/loaders/database');
 const logger = require('../../../src/loaders/logger');
 const { service } = require('../../../src/service/user-service');
+const { mainService } = require('../../../src/service/main-service');
 
 // 서버 open
 const server = app.listen(config.port, function(){
@@ -22,8 +23,16 @@ beforeAll(done => {
 describe('Test /main/user', () => {
     test('유저 세부정보 가져오기', async () => {
         const user = await service.getUserDetail({"user_id": "12"});
-        logger.debug(user.result);
-        console.dir(user)
+        logger.debug(user);
+        console.dir(user);
+    });
+});
+
+describe('Test /main/user', () => {
+    test('업데이트 알람 토큰', async () => {
+        const user = await mainService.updateToken({"token":"123","user_id": "12"});
+        logger.debug(user);
+        
     });
 });
 
