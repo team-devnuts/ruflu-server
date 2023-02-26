@@ -1,6 +1,6 @@
 "use strict";
 const database = require('../loaders/database');
-const userStore = require('../models/User');
+const userStore = require('../models/user-model');
 const logger = require('../loaders/logger');
 const profileTitle = {
     "gender":"성별",
@@ -20,14 +20,13 @@ const getUsers = async (data) => {
 };
 
 const getUserDetail = async (data) => {
-    let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     userStore.setConnectionPool(poolConnection);
     let [rows] = await userStore.selectUser(data);
     rows = rows.length > 0 ? await getUserProfile(rows) : rows;
-    responseObj.result = rows.length > 0 ? await getUserListImages(rows) : rows;  
+    rows = rows.length > 0 ? await getUserListImages(rows) : rows;  
     poolConnection.release();
-    return responseObj;
+    return rows[0];
 };
 
 const addHateUser = async (data) => {

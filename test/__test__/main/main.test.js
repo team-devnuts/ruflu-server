@@ -3,7 +3,7 @@ const config = require('../../../src/config');
 const app = require('../../../index')
 const { pool } = require('../../../src/loaders/database');
 const logger = require('../../../src/loaders/logger');
-const { service } = require('../../../src/service/userService');
+const { service } = require('../../../src/service/user-service');
 
 // 서버 open
 const server = app.listen(config.port, function(){
@@ -23,6 +23,7 @@ describe('Test /main/user', () => {
     test('유저 세부정보 가져오기', async () => {
         const user = await service.getUserDetail({"user_id": "12"});
         logger.debug(user.result);
+        console.dir(user)
     });
 });
 

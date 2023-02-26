@@ -1,12 +1,12 @@
 "use strict";
 const database = require('../loaders/database');
-const userStore = require('../models/User');
+const {Some} = require('../models/some-model');
 
 const getLikeMeList = async (data) => {
     let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
-    userStore.setConnectionPool(poolConnection);
-    let [rows] = await userStore.selectLikeMeList(data);
+    const someStore = new Some(poolConnection);
+    let [rows] = await someStore.selectLikeMeList(data);
     //rows = rows.length >0 ? await getCardImages(rows) : {};
     rows.forEach(user => {
         user.images = [{"image" : user.images}];
@@ -18,17 +18,17 @@ const getLikeMeList = async (data) => {
 
 const addLikeUser = async (data) => {
     const poolConnection = await database.getPoolConection();
-    userStore.setConnectionPool(poolConnection);
+    const someStore = new Some(poolConnection);
     poolConnection.beginTransaction();
-    const count = await userStore.insertLikeUser(data)
+    const count = await someStore.insertLikeUser(data)
     
     let result = {};
 
     if(count > 0) return result = {sucess:false};
-    const [rows] = await userStore.selectLikeMeUser(data);
+    const [rows] = await someStore.selectLikeMeUser(data);
 
     if(rows.length > 0) {
-        await userStore.insertMatchUser(data);
+        await someStore.insertMatchUser(data);
         result = {sucess:true, alarm : "match"};
     } else {
         result = {sucess:true, alarm : "like"};
@@ -41,29 +41,25 @@ const addLikeUser = async (data) => {
 };
 
 const getUserMatchedWithMeList = async (data) => {
-    let responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
-    userStore.setConnectionPool(poolConnection);
-    const [rows] = await userStore.selectMatchList(data);
+    const someStore = new Some(poolConnection);
+    const [rows] = await someStore.selectMatchList(data);
     rows.forEach(user => {
         user.images = [{"image" : user.images}];
     });
-    responseObj.result = rows;
     poolConnection.release();
-    return responseObj;
+    return rows;
 };
 
 const addUserInMyMatchList = async (data) => {
     const poolConnection = await database.getPoolConection();
-    userStore.setConnectionPool(poolConnection);
+    const someStore = new Some(poolConnection);
     await poolConnection.beginTransaction();
-    const result = await userStore.insertMatchUser(data);
+    const result = await someStore.insertMatchUser(data);
     await poolConnection.commit();
     poolConnection.release();
     return result > 0 ? "success" : "";
 }
-
-
 
 exports.service = {
       getLikeMeList

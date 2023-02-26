@@ -3,7 +3,7 @@ const config = require('../../../src/config');
 const app = require('../../../index')
 const { pool } = require('../../../src/loaders/database');
 const logger = require('../../../src/loaders/logger');
-const { service } = require('../../../src/service/likeService');
+const { service } = require('../../../src/service/some-service');
 
 // 서버 open
 const server = app.listen(config.port, function(){

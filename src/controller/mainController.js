@@ -1,25 +1,24 @@
-const {mainService} = require('../service/mainService');
-const {userService} = require('../service/userService');
+const { mainService } = require("../service/main-service");
+const {service} = require('../service/user-service');
 
 const updateLocation = async (req, res) => {
-    const latitude = req.body.latitude;
-    const longitude =req.body.longitude;
+    const {latitude, longitude} = req.body;
     const userId = req.get("user_id");
     const data = {latitude,longitude,"user_id":userId};
-    return await mainService.updateLocation(data);
+    req.responseObject.result = await mainService.updateLocation(data);
+    return req.responseObject;
 };
 
 const updateToken = async (req, res) => {
-    const token = req.body.token;
-    const userId = req.get("user_id");
-    const data = {token, userId};
-    return await mainService.updateToken(data);
+    const {token} = req.body;
+    const data = {"token": token, "user_id": req.get("user_id")};
+    req.responseObject.result = await mainService.updateToken(data);
+    return req.responseObject;
 };
 
 const getUserDetail = async (req, res) => {
-    const userId = req.get("user_id");
-    
-    return await userService.getUserDetail({"user_id": userId});
+    req.responseObject.result = await service.getUserDetail({"user_id": req.params.user_id});
+    return req.responseObject;
 };
 
 module.exports = {
