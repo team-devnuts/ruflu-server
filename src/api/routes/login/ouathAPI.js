@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {smsAPI} = require("./smsAPI")
-const mysql = require("mysql");
-const db_config = require("../../../loaders/database");
+const {smsAPI} = require("./smsAPI");
 const logger = require("../../../loaders/logger");
 
 
@@ -23,9 +21,7 @@ module.exports = (app) => {
     });
 
     router.post('/sms', async (req, res) => {
-        const {phone_number} = req.body;
-        const result = await smsAPI.send_message(phone_number);
-        res.json({"smsAuthCode": result.smsAuthCode , "code": result.resultCode});
+        res.json(await smsAPI.send_message(req, res));
     });
 }
 
