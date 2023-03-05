@@ -1,26 +1,32 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const mysql = require('mysql');
-const db_config = require('../../../loaders/database');
-const logger = require('../../../loaders/logger');
+const {smsAPI} = require("./smsAPI")
+const mysql = require("mysql");
+const db_config = require("../../../loaders/database");
+const logger = require("../../../loaders/logger");
 
 
 module.exports = (app) => {
     app.use('/login', router);
 
     router.post('/oauthAPI', async (req, res) => {
-        res.json({state:200})
+        res.json({state:200});
     });
     
     router.get('/', (req, res) => {
         logger.info('GET /');
         res.sendStatus(200);
-    })
+    });
     router.get('/error', (req,res) => {
         logger.error('Error message');
         res.sendStatus(500);
-    })
+    });
 
+    router.post('/sms', async (req, res) => {
+        const {phone_number} = req.body;
+        const result = await smsAPI.send_message(phone_number);
+        res.json({"smsAuthCode": result.smsAuthCode , "code": result.resultCode});
+    });
 }
 
 
@@ -28,7 +34,7 @@ module.exports = (app) => {
 
 /*
 
-// kakao API
+// kakao APIzv
 class Kakao {
     constructor(code) {
         // this.url = 'https://kauth.kakao.com/oauth/token';
