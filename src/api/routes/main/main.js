@@ -21,4 +21,6 @@ module.exports = (app) => {
     router.get("/user/:user_id", async (req, res) => {
         res.json(await controller.getUserDetail(req, res));
     });
+
+    
 }

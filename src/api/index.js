@@ -3,7 +3,7 @@ const homeRouter = require('./routes/home/home');
 const someRouter = require('./routes/some/some');
 const mainRouter = require('./routes/main/main');
 const alarmRouter = require('./routes/alarm/alarm');
-const loginRouter = require('./routes/login/ouathAPI');
+const signRouter = require('./routes/auth/sign');
 const chatRouter = require('./routes/chat/chat');
 
 module.exports = async () => {
@@ -13,7 +13,7 @@ module.exports = async () => {
     await someRouter(app);
     await mainRouter(app);
     await alarmRouter(app);
-    await loginRouter(app);
+    await signRouter(app);
     await chatRouter(app);
 
     return app;

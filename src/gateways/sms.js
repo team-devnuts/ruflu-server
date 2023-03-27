@@ -4,37 +4,39 @@ const CryptoJS = require('crypto-js');
 const SHA256 = require('crypto-js/sha256');
 const Base64 = require('crypto-js/enc-base64');
 
-
 const send_message = async (req, res) => { 
     const smsAuthCode = Math.floor(1000 + Math.random() * 9000);
     const userPhoneNumber = req.body.phone_number;
-    const requestData = getSmsRequestData(userPhoneNumber, smsAuthCode);
-    let resultCode = 404;
+    const {url, headers, body} = getSmsRequestData(userPhoneNumber, smsAuthCode);
 
-    await axios.create({headers: requestData.data.headers})
-    .post(requestData.url, requestData.data.body)
-    .then(response => {
-        resultCode = response.data.statusCode;
-        console.log(response);
-        //return {smsAuthCode, resultCode};
-    })
-    .catch(error => {
-        console.log(error);
-        
-        //console.log(error.status);
-        //return {smsAuthCode, resultCode};
-        resultCode = error;
-    });
-
-    req.responseObject.result = {smsAuthCode, resultCode};
+    req.responseObject.result.smsAuthCode = smsAuthCode;
+    req.responseObject.result.resultCode = await requestSmsApiService(url, headers, body);
     return req.responseObject;
 }
 
+const requestSmsApiService = async (url, headers, body) => {
+    let resultCode = 404;
+    await axios.create({ headers: headers })
+        .post(url, body)
+        .then(response => {
+            resultCode = response.data.statusCode;
+            console.log(response);
+            //return {smsAuthCode, resultCode};
+        })
+        .catch(error => {
+            console.log(error);
+            //console.log(error.status);
+            //return {smsAuthCode, resultCode};
+            resultCode = error;
+        });
+    return resultCode;
+}
 
 const getSmsRequestData = (userPhoneNumber, smsAuthCode) => {
     const { url, accessKey, date, signature } = getHeadersSmsApi();
 
-    return {url: url, data: {
+    return {
+        url: url,
         headers: {
             "Content-Type": "application/json; charset=utf-8",
             "x-ncp-iam-access-key": accessKey,
@@ -49,7 +51,7 @@ const getSmsRequestData = (userPhoneNumber, smsAuthCode) => {
             messages: [{ to: `${userPhoneNumber}`, }
             ],
         }
-    }};
+    };
 }
 
 
@@ -81,3 +83,4 @@ const getHeadersSmsApi = () => {
 }
 
 exports.smsAPI = {send_message};
+
