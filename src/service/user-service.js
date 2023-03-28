@@ -8,7 +8,7 @@ const profileTitle = {
     "job":"직업",
     "fancy":"이상형",
     "academy":"학력"
-}
+};
 
 const getUsers = async (data) => {
     const poolConnection = await database.getPoolConection();
@@ -66,13 +66,17 @@ const getUserProfile = async (userList) => {
                             ,"value" : value[key]}   
                 }
             });
-        logger.info(array[index].detail_info);
     });
     return userList;
 };
 
-exports.service = {
+const saveUserInformation = async (body) => {
+    
+}
+
+exports.userService = {
       getUsers
     , addHateUser
     , getUserDetail
+    , saveUserInformation
 }
