@@ -1,9 +1,9 @@
 const express = require("express");
+const signController = require("../../../controller/signController");
 const router = express.Router();
-const {smsAPI} = require("../../../gateways/sms");
 const logger = require("../../../loaders/logger");
 
-module.exports = (app) => {
+module.exports = (app, verifyToken) => {
     app.use('/auth', router);
 
     router.post('/oauthAPI', async (req, res) => {
@@ -15,16 +15,24 @@ module.exports = (app) => {
         res.sendStatus(200);
     });
 
-    router.get('/error', (req,res) => {
+    router.get('/error', (req, res) => {
         logger.error('Error message');
         res.sendStatus(500);
     });
 
-    router.post('/sign', (req, res) => {
+    router.post('/user', (req, res) => {
         
     });
 
+    router.get('/jwt/access', (req, res) => {
+        res.json(signController.getJwtAccessToken(req, res));
+    });
+
+    router.get('/jwt/refresh', (req, res) => {
+        res.json(signController.getJwtRefreshToken(req, res));
+    });
+
     router.post('/sms', async (req, res) => {
-        res.json(await smsAPI.send_message(req, res));
+        res.json(await signController.sendSmsAuthNumber(req, res));
     });
 }
