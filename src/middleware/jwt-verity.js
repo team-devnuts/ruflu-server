@@ -1,3 +1,4 @@
+const config = require("../config");
 const jwt = require("../gateways/jwt");
 
 // 토큰 검증 미들웨어
@@ -9,7 +10,7 @@ function verifyToken(req, res, next) {
       return res.status(401).json({ error: 'Access denied. No token provided.' });
     }
     
-    jwt.verify(token);
+    jwt.verify(token, config.jwtAccessSecretKey);
 
     next();
 }

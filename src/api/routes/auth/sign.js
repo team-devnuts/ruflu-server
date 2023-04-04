@@ -20,16 +20,53 @@ module.exports = (app, verifyToken) => {
         res.sendStatus(500);
     });
 
-    router.post('/user', (req, res) => {
-        
+    router.post('/user', async (req, res) => {
+        /*
+            회원가입
+            1. user_info
+              user_id
+            , login_phone_no
+            , login_method
+            , use_yn
+            , registeration_date
+            , modification_date
+
+            2. user_profile_info
+              user_id
+            , nick_name
+            , gender
+            , birth
+            , height
+            , job
+            , fancy
+            , registration_date
+            , modification_date
+            , academy
+        */
+        res.json(await signController.signIn(req, res)); 
     });
 
-    router.get('/jwt/access', (req, res) => {
-        res.json(signController.getJwtAccessToken(req, res));
+    router.get('/jwt/access', async (req, res) => {
+        res.json(await signController.getJwtAccessToken(req, res));
     });
 
-    router.get('/jwt/refresh', (req, res) => {
-        res.json(signController.getJwtRefreshToken(req, res));
+    // router.get('/jwt/refresh', (req, res) => {
+    //     res.json(signController.getJwtRefreshToken(req, res));
+    // });
+
+    router.post('/login', (req, res) => {
+        /*
+            1. 로그인시 필요한 정보
+             - 유저 아이디(고유번호), 핸드폰 번호
+            2. oauth 로그인일 경우
+             - 카카오톡 고유 아이디
+             - 없다고 응답
+            3. 핸드폰 인증일 경우 
+             - 유저 정보 확인 : 핸드폰 번호
+             - 없으면 회원가입으로 이동하라고 응답
+            4. refreshtoken accesstoken 재발급
+        */
+        //signController.login();
     });
 
     router.post('/sms', async (req, res) => {

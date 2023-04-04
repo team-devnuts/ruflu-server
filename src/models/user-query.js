@@ -1,4 +1,4 @@
-let json = {
+const json = {
     selectUserCardList : 
     `SELECT 
         A.user_id
@@ -60,6 +60,64 @@ let json = {
         JOIN user_profile_info B
         ON A.user_id = B.user_id
     WHERE A.user_id = :user_id
+    `,
+    insertUser:
+    `
+    INSERT INTO user_info
+    (
+        user_id
+        , login_phone_no
+        , login_method
+        , use_yn
+        , registeration_date
+        , modification_date
+    )
+    VALUES
+    (
+        :user_id
+        , :login_phone_no
+        , :login_method
+        , '1'
+        , now()
+        , now()
+    )
+    `,
+    insertUserProfile:
+    `
+    INSERT INTO user_profile_info
+    (
+        user_id
+        , nick_name
+        , gender
+        , birth
+        , height
+        , job
+        , fancy
+        , registration_date
+        , modification_date
+        , academy
+    )
+    VALUES
+    (
+        :user_id
+        , :nick_name
+        , :gender
+        , :birth
+        , :height
+        , :job
+        , :fancy
+        , now()
+        , now()
+        , :academy
+    )
+    `,
+    selectUserIdSequence:
+    `
+    CALL get_nextval(?, @result)
+    `,
+    selectUserId:
+    `
+    SELECT CONCAT(DATE_FORMAT(NOW(), '%Y%m%d%h%i'), LPAD(@result, '6', '0')) AS user_id FROM dual;
     `
 }
 

@@ -39,14 +39,14 @@ module.exports = {
         }
         return result;
     }
-    ,publishRefreshToken: (user) => {
+    ,publishRefreshToken: async (user) => {
         const payload = {// 페이로드 유저 정보를 담아서 보냄.
             userId: user.user_id,
             phoneNumber: user.phone_number,
         }
         
         const result = // payload, secretkey(사용자 임의로 생성), options
-            jsonwebtoken.sign(payload, process.env.JWT_REFRESH_SECRETKEY
+            await jsonwebtoken.sign(payload, process.env.JWT_REFRESH_SECRETKEY
                 ,{
                     algorithm: 'HS256',     // 암호화 알고리즘
                     expiresIn: '30d', 	    // 유효기간
@@ -54,10 +54,10 @@ module.exports = {
             )
         return result;
     },
-    verify: (token, secretkey) => {
+    verify: async (token, secretkey) => {
         let decoded = null;
         try {
-            decoded = jsonwebtoken.verify(token, secretkey);
+            decoded = await jsonwebtoken.verify(token, secretkey);
 
             return {
                 ok: true,

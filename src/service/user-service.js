@@ -2,13 +2,8 @@
 const database = require('../loaders/database');
 const userStore = require('../models/user-model');
 const logger = require('../loaders/logger');
-const profileTitle = {
-    "gender":"성별",
-    "height":"키",
-    "job":"직업",
-    "fancy":"이상형",
-    "academy":"학력"
-};
+const config = require('../config');
+const profileTitle = config.profileTitle;
 
 const getUsers = async (data) => {
     const poolConnection = await database.getPoolConection();
@@ -70,8 +65,30 @@ const getUserProfile = async (userList) => {
     return userList;
 };
 
-const saveUserInformation = async (body) => {
-    
+const saveUserInformation = async (user) => {
+    const result = {message: ""};
+    const poolConnection = await database.getPoolConection();
+    userStore.setConnectionPool(poolConnection);
+    //console.log(user);
+    user.user_id = await userStore.getUserId();
+    await poolConnection.beginTransaction();
+    let [count] = await userStore.insertUser(user);
+    if(!(count.affectedRows > 0)) {
+        poolConnection.rollback();
+        result.message = "failed";
+        return result;
+    }
+    [count] = await userStore.insertUserProfile(user);
+    await poolConnection.commit();
+    //console.log(user);
+    if(!(count.affectedRows > 0)) {
+        poolConnection.rollback();
+        result.message = "failed";
+        return result;
+    }
+    result.message = "success"
+    result.user = user;
+    return result;
 }
 
 exports.userService = {

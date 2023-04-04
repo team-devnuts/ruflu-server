@@ -6,20 +6,29 @@ module.exports = {
     sendSmsAuthNumber : async (req, res) => {
         return await smsAPI.send_message(req, res);
     },
-    getJwtAccessToken : (req, res) => {
-        const user = {"id": req.get("user_id")
-                    , "phoneNumber": req.get("phone_number")};
-        req.responseObject.result.token = jwt.publishAccessToken(user)
-        return req.responseObject.result;
+    getJwtAccessToken : async (req, res) => {
+        /*
+        1. Refresh Token 검증
+        2. Refresh Toekn 안에 payload 유저 정보로 존재 여부 체크
+        3. 유저정보로 Access Token 발급
+        */
+        const refreshToken = req.get("refersh_token");
+        req.responseObject.result.token = jwt.publishAccessToken(refreshToken);
+        return req.responseObject;
     },
-    getJwtRefreshToken : (req, res) => {
-        const user = {"id": req.get("user_id")
-                    , "phoneNumber": req.get("phone_number")};
-        req.responseObject.result.token = jwt.publishRefreshToken(user)
-        return req.responseObject.result;
-    },
-    saveUserInformation : (req, res) => {
-        req.responseObject.result = userService.saveUserInformation(req.body);
-        return req.responseObject.result;
+    // getJwtRefreshToken : (req, res) => {
+    //     const user = {"id": req.get("user_id")
+    //                 , "phoneNumber": req.get("phone_number")};
+    //     req.responseObject.result.token = jwt.publishRefreshToken(user)
+    //     return req.responseObject.result;
+    // },
+    signIn : (req, res) => {
+        const user = req.body;
+        console.log(user);
+        const result = userService.saveUserInformation(user);
+        result.refreshToken = jwt.sign(result);
+
+        req.responseObject.result = result;
+        return req.responseObject;
     }
 }

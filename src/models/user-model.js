@@ -53,4 +53,19 @@ User.prototype.selectUser = async (data) => {
     return await this.poolConnection.query(userQueryStore.selectUser, data);
 }
 
+User.prototype.insertUser = async (user) => {
+    return await this.poolConnection.query(userQueryStore.insertUser, user);
+}
+
+User.prototype.getUserId = async () => {
+    const [row, fields] = await this.poolConnection.execute(userQueryStore.selectUserIdSequence, ['user_info_sequence']);
+    const [result] = await this.poolConnection.execute(userQueryStore.selectUserId);
+    
+    return result[0].user_id;
+}
+
+User.prototype.insertUserProfile = async (user) => {
+    return await this.poolConnection.query(userQueryStore.insertUserProfile, user);
+}
+
 module.exports = new User();

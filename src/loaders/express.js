@@ -4,7 +4,7 @@ const config = require('../config');
 
 module.exports = async ( {app} ) => {
     
-    app.use(express.urlencoded({extended : false}));
+    app.use(express.urlencoded({extended : true}));
     app.use(express.json());
     app.use(require('cookie-parser')());
     app.use(express.static('public'));

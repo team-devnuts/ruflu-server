@@ -10,7 +10,16 @@ module.exports = {
     databasePW: process.env.MYSQL_ACCESS_PW,
     databaseNAME: process.env.MYSQL_DATABASE,
     imageDIR: process.env.IMAGE_DIR,
-    api : {
+    jwtAccessSecretKey: process.env.JWT_SECRETKEY,
+    jwtRefreshSecretKey: process.env.JWT_REFRESH_SECRETKEY,
+    api: {
         prefix : '/api'
+    },
+    profileTitle: {
+        "gender":"성별",
+        "height":"키",
+        "job":"직업",
+        "fancy":"이상형",
+        "academy":"학력"
     }
 }
