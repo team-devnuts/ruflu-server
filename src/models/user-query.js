@@ -75,7 +75,7 @@ const json = {
     VALUES
     (
         :user_id
-        , :login_phone_no
+        , :phone_number
         , :login_method
         , '1'
         , now()
@@ -118,6 +118,21 @@ const json = {
     selectUserId:
     `
     SELECT CONCAT(DATE_FORMAT(NOW(), '%Y%m%d%h%i'), LPAD(@result, '6', '0')) AS user_id FROM dual;
+    `,
+    selectUserByPhoneNumber: 
+    `
+    SELECT 
+        user_id
+        ,login_phone_no
+    FROM user_info
+    WHERE login_phone_no = :phone_number
+    `,
+    selectUserByKaKaoSerialNo:
+    `
+    SELECT
+
+    FROM user_info
+    WHERE kakao_serial_no = :kakao_serial_no
     `
 }
 
