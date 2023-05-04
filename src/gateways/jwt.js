@@ -25,12 +25,16 @@ module.exports = {
         }
         return result;
     }
-    ,publishAccessToken: (refreshToken) => {
-        const validationResult = verify(refreshToken, config.jwtRefreshSecretKey);
+    ,publishAccessToken: async (refreshToken) => {
+        // 유저 정보 존재여부 체크
+        const validationResult = await verify(refreshToken, config.jwtRefreshSecretKey);
         if(!validationResult.ok) new ClientException(403, "검증 되지 않은 토큰");
+        // payload 정보 추가
+        const payload = {userId: validationResult.user.userId,
+                         phoneNumber: validationResult.user.phoneNumber}
 
         const result = {// payload, secretkey(사용자 임의로 생성), options
-            accessToken : jsonwebtoken.sign(payload, process.env.JWT_SECRETKEY
+            accessToken : await jsonwebtoken.sign(payload, process.env.JWT_SECRETKEY
                     ,{
                         algorithm: 'HS256',     // 암호화 알고리즘
                         expiresIn: '1h', 	    // 유효기간
