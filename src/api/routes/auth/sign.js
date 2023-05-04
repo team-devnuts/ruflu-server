@@ -5,10 +5,6 @@ const logger = require("../../../loaders/logger");
 
 module.exports = (app, verifyToken) => {
     app.use('/auth', router);
-
-    router.post('/oauthAPI', async (req, res) => {
-        res.json({state:200});
-    });
     
     router.get('/', (req, res) => {
         logger.info('GET /');
@@ -43,7 +39,7 @@ module.exports = (app, verifyToken) => {
             , modification_date
             , academy
         */
-        res.json(await signController.signIn(req, res)); 
+        res.json(await signController.signUp(req, res)); 
     });
 
     router.get('/jwt/access', async (req, res) => {
@@ -54,10 +50,10 @@ module.exports = (app, verifyToken) => {
     //     res.json(signController.getJwtRefreshToken(req, res));
     // });
 
-    router.post('/login', (req, res) => {
+    router.post('/login', async (req, res) => {
         /*
             1. 로그인시 필요한 정보
-             - 유저 아이디(고유번호), 핸드폰 번호
+             - 핸드폰 번호, 카카오 아이디
             2. oauth 로그인일 경우
              - 카카오톡 고유 아이디
              - 없다고 응답
@@ -66,10 +62,11 @@ module.exports = (app, verifyToken) => {
              - 없으면 회원가입으로 이동하라고 응답
             4. refreshtoken accesstoken 재발급
         */
-        //signController.login();
+        res.json(await signController.login());
     });
 
     router.post('/sms', async (req, res) => {
         res.json(await signController.sendSmsAuthNumber(req, res));
     });
+
 }

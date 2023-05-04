@@ -16,19 +16,26 @@ module.exports = {
         req.responseObject.result.token = jwt.publishAccessToken(refreshToken);
         return req.responseObject;
     },
+    
+    signUp : async (req, res) => {
+        const user = req.body;
+        
+        const result = await userService.saveUserInformation(user);
+        result.refreshToken = jwt.sign(result);
+
+        req.responseObject.result = result;
+        return req.responseObject;
+    },
+    login : async (req, res) => {
+        const body = req.body;
+        req. responseObject.result = userService.login(body);
+        return req.responseObject;
+    }
+
     // getJwtRefreshToken : (req, res) => {
     //     const user = {"id": req.get("user_id")
     //                 , "phoneNumber": req.get("phone_number")};
     //     req.responseObject.result.token = jwt.publishRefreshToken(user)
     //     return req.responseObject.result;
     // },
-    signIn : (req, res) => {
-        const user = req.body;
-        console.log(user);
-        const result = userService.saveUserInformation(user);
-        result.refreshToken = jwt.sign(result);
-
-        req.responseObject.result = result;
-        return req.responseObject;
-    }
 }
