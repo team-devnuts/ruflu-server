@@ -3,6 +3,7 @@ const loaders = require('./src/loaders');
 const exceptionHandler = require('./src/middleware/exception-handler');
 const responseMessage = require('./src/middleware/response-message');
 const app = express();
+const cors = require('cors');
 
 //const require  = require('app-root-path');
 
@@ -38,6 +39,7 @@ io.on("connection", (socket) => {
 (async () => {
     app.use(responseMessage());
     app.use(exceptionHandler());
+    app.use(cors({origin: '*', credential: true}))
     await loaders({ expressApp: app });
 })();
 

@@ -6,7 +6,7 @@ const logger = require('../../../loaders/logger');
 const request = require('request');
 const controller = require('../../../controller/homeController');
 
-module.exports = async (app) => {
+module.exports = async (app, verifyToken) => {
     app.use("/home", router);
 
 

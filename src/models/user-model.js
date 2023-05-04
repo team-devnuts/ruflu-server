@@ -45,12 +45,37 @@ User.prototype.getUserProfile = async (data) => {
 }
 
 User.prototype.insertHateUser = async (data) => {
-    const count = await this.poolConnection.query(userQueryStore.insertHateUser, data);
-    return count;
+    const [result] = await this.poolConnection.query(userQueryStore.insertHateUser, data);
+    return result.affectedRows;
 }
 
 User.prototype.selectUser = async (data) => {
     return await this.poolConnection.query(userQueryStore.selectUser, data);
+}
+
+User.prototype.insertUser = async (user) => {
+    const [result] = await this.poolConnection.query(userQueryStore.insertUser, user);
+    return result.affectedRows;
+}
+
+User.prototype.getUserId = async () => {
+    const [row, fields] = await this.poolConnection.execute(userQueryStore.selectUserIdSequence, ['user_info_sequence']);
+    const [result] = await this.poolConnection.execute(userQueryStore.selectUserId);
+    
+    return result[0].user_id;
+}
+
+User.prototype.insertUserProfile = async (user) => {
+    const [result] = await this.poolConnection.query(userQueryStore.insertUserProfile, user);
+    return result.affectedRows;
+}
+
+User.prototype.getUserByPhoneNumber = async (phoneNumber) => {
+    return await this.poolConnection.query(userQueryStore.selectUserByPhoneNumber, {"phone_number": phoneNumber});
+}
+
+User.prototype.getUserByKakaoSerialNo = async (kakaoSerialNo) => {
+    return await this.poolConnection.query(userQueryStore.selectUserByKaKaoSerialNo, {"kakao_serial_no": kakaoSerialNo});
 }
 
 module.exports = new User();

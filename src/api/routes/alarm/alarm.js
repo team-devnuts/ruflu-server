@@ -11,7 +11,7 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-module.exports = (app) => {
+module.exports = (app, verifyToken) => {
     app.use('/alarm', router);
 
     router.post("/push/msg" , async (req,res) => {

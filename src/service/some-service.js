@@ -61,7 +61,7 @@ const addUserInMyMatchList = async (data) => {
     return result > 0 ? "success" : "";
 }
 
-exports.service = {
+exports.someService = {
       getLikeMeList
     , addLikeUser
     , getUserMatchedWithMeList
