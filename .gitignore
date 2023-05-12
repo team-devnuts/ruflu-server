@@ -4,6 +4,8 @@
 #ruflu firebase key ignore
 ruflu-e48f5-firebase-adminsdk-spqgm-acc7d36e6e.json
 
+# ESLint
+.eslintrc.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/node
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
