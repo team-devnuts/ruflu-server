@@ -1,5 +1,3 @@
-'use strict';
-
 class ClientException extends Error {
     constructor(code, message, ...param) {
         super(...param);
