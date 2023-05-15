@@ -1,9 +1,10 @@
 const express = require("express");
-const signController = require("../../../controller/signController");
+const signController = require("../../../controller/sign-controller");
+
 const router = express.Router();
 const logger = require("../../../loaders/logger");
 
-module.exports = (app, verifyToken) => {
+module.exports = (app) => {
     app.use('/auth', router);
     
     router.get('/', (req, res) => {
