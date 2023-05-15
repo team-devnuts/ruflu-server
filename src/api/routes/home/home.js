@@ -1,16 +1,14 @@
-"use strict";
-
 const express = require('express');
-const router = express.Router();
-const logger = require('../../../loaders/logger');
-const request = require('request');
-const controller = require('../../../controller/homeController');
 
-module.exports = async (app, verifyToken) => {
+const router = express.Router();
+// const logger = require('../../../loaders/logger');
+const controller = require('../../../controller/home-controller');
+
+module.exports = async (app) => {
     app.use("/home", router);
 
 
-    router.get("/", (req, res, next) =>  {
+    router.get("/", (req, res) =>  {
         res.json({state:200})
     });
     
