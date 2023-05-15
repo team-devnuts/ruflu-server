@@ -1,24 +1,23 @@
-const {Router} = require('express');
-const router = Router();
+const express = require('express');
 const mysql = require('mysql');
-const db = require(process.env.PWD + '/src/loaders/database');
-const admin = require('firebase-admin'); 
-const serviceAccount = require(process.env.PWD + '/ruflu-e48f5-firebase-adminsdk-spqgm-acc7d36e6e.json');
-const {appCheck} = require('firebase-admin');
-const logger = require(process.env.PWD + '/src/loaders/logger');
+
+const db = require(`../../../loaders/database`);
+const admin = require('firebase-admin');
+ 
+const serviceAccount = require(`../../../../ruflu-e48f5-firebase-adminsdk-spqgm-acc7d36e6e.json`);
+const logger = require('../../../loaders/logger');
+
+const router = express.Router();
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-module.exports = (app, verifyToken) => {
+module.exports = (app) => {
     app.use('/alarm', router);
 
     router.post("/push/msg" , async (req,res) => {
-        let ret = "";
-        //db_config.connect(conn);
-        console.log(req.body.to_user_id);
-        
+        const connection = await db.getConnection(async conn => conn);
         const data = [req.body.to_user_id];
         let query = `SELECT     
                         A.alram_token, 
@@ -31,22 +30,11 @@ module.exports = (app, verifyToken) => {
         
         query = mysql.format(query, data);
     
+        const [rows] = await connection.query(query);
     
-        let select_query = conn.query(query,  function(err, rows) {
-            if(err) {
-                throw err;
-            } else {
-                console.log("select token : Success");
-                ret = {
-                    data : rows
-                }
-                console.log(ret)
-            }
-        })
-    
-        //디바이스의 토큰 값 
-        let deviceToken ='';
-        let message = { 
+        // 디바이스의 토큰 값 
+        const deviceToken =rows[0].alarm_token;
+        const message = { 
             data: { 
                 type: 'MESSAGE',
                 title: 'Ruflu',
@@ -56,22 +44,19 @@ module.exports = (app, verifyToken) => {
         } 
         
         admin.messaging().send(message) 
-        .then(function (response) { 
-            console.log('Successfully sent message: : ', response) 
-            return res.status(200).json({success : true}) 
-        }).catch(function (err) { 
-            console.log('Error Sending message!!! : ', err) 
-            return res.status(400).json({success : false}) 
+        .then((response) => { 
+            logger.info(`Successfully sent message : ${response}`);
+            res.json(req.responseObject);
+        }).catch((err) => {
+            logger.error(`Error Sending message!!! : ${err}`) 
+            req.responseObject.code = 400;
+            res.json(req.responseObject);
         }); 
     })
     
     
-    router.post("/push/like" , async function(req,res) {
-        console.log("연결 성공!!!!");
-        let ret = "";
+    router.post("/push/like" , async (req,res) => {
         const connection = await db.getConnection(async conn => conn);
-        console.log(req.body);
-        
         const data = [req.body.toUserId];
         let query = `SELECT     
                         A.alarm_token, 
@@ -80,17 +65,14 @@ module.exports = (app, verifyToken) => {
                      INNER JOIN user_profile_info B
                         on A.USER_ID = B.USER_ID
                      WHERE A.USER_ID = ?
-                        ` ;
+                        `;
         
         query = mysql.format(query, data);
-        logger.info(`quert : ${query}`)
-        let [rows] = await connection.query(query);
+        const [rows] = await connection.query(query);
         
-    
-        //디바이스의 토큰 값 
-        let deviceToken =rows[0].alarm_token;
-        console.log(`devicetoken : ${deviceToken}`)
-        let message = { 
+        // 디바이스의 토큰 값 
+        const deviceToken =rows[0].alarm_token;
+        const message = { 
             notification: { 
                 title: 'Ruflu',
                 body: '두근두근 좋아요~❤', 
@@ -99,12 +81,13 @@ module.exports = (app, verifyToken) => {
         } 
         
         admin.messaging().send(message) 
-        .then(function (response) { 
-            console.log('Successfully sent like: : ', response) 
-            return res.status(200).json({success : true}) 
-        }).catch(function (err) { 
-            console.log('Error Sending like!!! : ', err) 
-            return res.status(400).json({success : false}) 
+        .then((response) => { 
+            logger.info(`Successfully sent message : ${response}`);
+            res.json(req.responseObject);
+        }).catch((err) => {
+            logger.error(`Error Sending message!!! : ${err}`);
+            req.responseObject.code = 400;
+            res.json(req.responseObject);
         }); 
     })
 }
