@@ -1,7 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
-const router = require(`../../api`);
+const router = require(`../api`);
 const config = require('../config');
 
 
