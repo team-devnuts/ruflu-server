@@ -11,4 +11,8 @@ class ClientException extends Error {
     }
 }
 
-module.exports = ClientException;
+const createClientException = (code, message, ...param) => {
+    return new ClientException(code, message);
+}
+
+module.exports = createClientException;
