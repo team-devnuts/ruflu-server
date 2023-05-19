@@ -1,5 +1,3 @@
-'use strict';
-
 const mainQueryStore = require('./main-query');
 
 function Main() {}

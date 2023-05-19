@@ -11,15 +11,15 @@ const pool = mysqlPromise.createPool({
 
 logger.info(`Connection pool created.`);
 
-pool.on('acquire', function (connection) {
+pool.on('acquire', (connection) => {
     logger.info(`Connection ${connection.threadId} acquired`);
 });
   
-pool.on('enqueue', function () {
+pool.on('enqueue', () => {
     logger.info('Waiting for available connection slot');
 });
 
-pool.on('release', function (connection) {
+pool.on('release', (connection) => {
     logger.info(`Connection ${connection.threadId} released`);
 });
 
@@ -32,25 +32,17 @@ const pool = connectionDB({
     password: config.databasePW,
     database: config.databaseNAME});
 */
-const getPool = async () => {
-    return pool
-}
-
-const getPoolConection = async () => {
-    const connection = await pool.getConnection(async conn => conn);
-    connection.config.queryFormat = queryFormat;
-    connection.on('error', handledErr);
-    return connection;
-}
 
 function queryFormat(query, values) {
     if (!values) return query;
-    return query.replace(/\:(\w+)/g, function (txt, key) {
+    // eslint-disable-next-line
+    return query.replace(/\:(\w+)/g, (txt, key) => {
+        // eslint-disable-next-line
         if (values.hasOwnProperty(key)) {
             return this.escape(values[key]);
         }
         return txt;
-    }.bind(this));
+    });
 };
 
 function handledErr(err) {
@@ -59,5 +51,12 @@ function handledErr(err) {
     logger.error(`sql : ${err.sql}`);
 };
 
-module.exports = {getPoolConection, pool};
+const getPoolConection = async () => {
+    const connection = await pool.getConnection(async conn => conn);
+    connection.config.queryFormat = queryFormat;
+    connection.on('error', handledErr);
+    return connection;
+}
 
+
+module.exports = {getPoolConection, pool};

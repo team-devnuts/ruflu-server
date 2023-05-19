@@ -1,4 +1,4 @@
-let json = {
+const json = {
     updateUserToken:
     `
     UPDATE user_info SET
@@ -15,6 +15,5 @@ let json = {
     `
     
 };
-
 
 module.exports = json;

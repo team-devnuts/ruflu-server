@@ -1,62 +1,30 @@
 const axios = require('axios');
 // create signature2
 const CryptoJS = require('crypto-js');
-const SHA256 = require('crypto-js/sha256');
-const Base64 = require('crypto-js/enc-base64');
-
-const send_message = async (req, res) => { 
-    const smsAuthCode = Math.floor(1000 + Math.random() * 9000);
-    const userPhoneNumber = req.body.phone_number;
-    const {url, headers, body} = getSmsRequestData(userPhoneNumber, smsAuthCode);
-
-    req.responseObject.result.smsAuthCode = smsAuthCode;
-    req.responseObject.result.resultCode = await requestSmsApiService(url, headers, body);
-    return req.responseObject;
-}
+// const SHA256 = require('crypto-js/sha256');
+// const Base64 = require('crypto-js/enc-base64');
+const logger = require('../loaders/logger');
 
 const requestSmsApiService = async (url, headers, body) => {
     let resultCode = 404;
-    await axios.create({ headers: headers })
+    await axios.create({ headers })
         .post(url, body)
         .then(response => {
             resultCode = response.data.statusCode;
-            console.log(response);
-            //return {smsAuthCode, resultCode};
+            logger.info(response);
+            // return {smsAuthCode, resultCode};
         })
         .catch(error => {
-            console.log(error);
-            //console.log(error.status);
-            //return {smsAuthCode, resultCode};
+            logger.error(error);
+            // console.log(error.status);
+            // return {smsAuthCode, resultCode};
             resultCode = error;
         });
     return resultCode;
 }
 
-const getSmsRequestData = (userPhoneNumber, smsAuthCode) => {
-    const { url, accessKey, date, signature } = getHeadersSmsApi();
-
-    return {
-        url: url,
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "x-ncp-iam-access-key": accessKey,
-            "x-ncp-apigw-timestamp": date,
-            "x-ncp-apigw-signature-v2": signature
-        },
-        body: {
-            type: "SMS",
-            countryCode: "82",
-            from: "01041221498",
-            content: `인증번호는 [${smsAuthCode}] 입니다.`,
-            messages: [{ to: `${userPhoneNumber}`, }
-            ],
-        }
-    };
-}
-
-
 const getHeadersSmsApi = () => {
-    const date = Date.now().toString();
+    const date = Date.now().toString(); 
     const method = "POST";
     const serviceId = process.env.SENS_SERVICEID;
     const accessKey = process.env.SENS_ACCESSKEY;
@@ -82,5 +50,37 @@ const getHeadersSmsApi = () => {
     return { url, accessKey, date, signature };
 }
 
-exports.smsAPI = {send_message};
+const getSmsRequestData = (userPhoneNumber, smsAuthCode) => {
+    const { url, accessKey, date, signature } = getHeadersSmsApi();
+
+    return {
+        url,
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-ncp-iam-access-key": accessKey,
+            "x-ncp-apigw-timestamp": date,
+            "x-ncp-apigw-signature-v2": signature
+        },
+        body: {
+            type: "SMS",
+            countryCode: "82",
+            from: "01041221498",
+            content: `인증번호는 [${smsAuthCode}] 입니다.`,
+            messages: [{ to: `${userPhoneNumber}`, }
+            ],
+        }
+    };
+}
+
+const sendMessage = async (req, res) => { 
+    const smsAuthCode = Math.floor(1000 + Math.random() * 9000);
+    const userPhoneNumber = req.body.phone_number;
+    const {url, headers, body} = getSmsRequestData(userPhoneNumber, smsAuthCode);
+
+    req.responseObject.result.smsAuthCode = smsAuthCode;
+    req.responseObject.result.resultCode = await requestSmsApiService(url, headers, body);
+    res.json(req.responseObject);
+}
+
+exports.smsAPI = {sendMessage};
 

@@ -1,12 +1,11 @@
-const appRoot = require('app-root-path');
+// const appRoot = require('app-root-path');
+// const process = require('process');
 const winston = require('winston');
-const process = require('process');
 
 const { combine, timestamp, label, printf } = winston.format;
 
-const myFormat = printf(({ level, message, label, timestamp }) => {
-  return `${timestamp} [${label}] ${level}: ${message}`;
-});
+// eslint-disable-next-line
+const myFormat = printf(({ level, message, label, timestamp }) => `${timestamp} [${label}] ${level}: ${message}`);
 
 const options = {
   file: { 
@@ -46,7 +45,8 @@ const options = {
 }
 winston.addColors(options.colors); 
   
-let logger = new winston.createLogger({
+// eslint-disable-next-line
+const logger = new winston.createLogger({
     levels: options.levels,
     level: 'custom',
     transports: [
@@ -62,4 +62,5 @@ logger.stream = {
   },
 };
 */
+
 module.exports = logger;

@@ -1,12 +1,15 @@
 const express = require('express');
-const router = require(process.env.PWD + '/src/api') ;
+const cookieParser = require('cookie-parser');
+
+const router = require(`../api`);
 const config = require('../config');
+
 
 module.exports = async ( {app} ) => {
     
     app.use(express.urlencoded({extended : true}));
     app.use(express.json());
-    app.use(require('cookie-parser')());
+    app.use(cookieParser());
     app.use(express.static('public'));
     app.use(express.static(config.imageDIR));
     app.use(config.api.prefix, await router())

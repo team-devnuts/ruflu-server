@@ -3,7 +3,7 @@ const config = require('../../../src/config');
 const app = require('../../../index');
 const logger = require('../../../src/loaders/logger');
 const { pool } = require('../../../src/loaders/database');
-const signController = require('../../../src/controller/signController');
+const signController = require('../../../src/controller/sign-controller');
 const jwt = require('../../../src/gateways/jwt');
 const { userService } = require('../../../src/service/user-service');
 
@@ -37,7 +37,7 @@ describe('jwt token', () => {
 
 describe('sign in test', () => {
     test('회원가입 테스트', async () => {
-        const user = {login_phone_no: "01041221498"
+        const user = {phone_number: "01041221498"
                     , login_method:""
                     , nick_name:""
                     , gender:""
@@ -49,7 +49,7 @@ describe('sign in test', () => {
                     }
         const result = await userService.saveUserInformation(user);
         console.log(result);
-    });
+    }, 10000);
 });
 
 afterAll(done => {

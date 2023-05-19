@@ -4,7 +4,7 @@ const jwt = require("../gateways/jwt");
 
 module.exports = {
     sendSmsAuthNumber : async (req, res) => {
-        return await smsAPI.send_message(req, res);
+        smsAPI.sendMessage(req, res);
     },
     getJwtAccessToken : async (req, res) => {
         /*
@@ -13,8 +13,8 @@ module.exports = {
         3. 유저정보로 Access Token 발급
         */
         const refreshToken = req.get("refersh_token");
-        req.responseObject.result.token = jwt.publishAccessToken(refreshToken);
-        return req.responseObject;
+        req.responseObject.result.token = await jwt.publishAccessToken(refreshToken);
+        res.json(req.responseObject);
     },
     
     signUp : async (req, res) => {
@@ -24,12 +24,12 @@ module.exports = {
         result.refreshToken = jwt.sign(result);
 
         req.responseObject.result = result;
-        return req.responseObject;
+        res.json(req.responseObject);
     },
     login : async (req, res) => {
-        const body = req.body;
-        req. responseObject.result = userService.login(body);
-        return req.responseObject;
+        const {body} = req;
+        req. responseObject.result = await userService.login(body);
+        res.json(req.responseObject);
     }
 
     // getJwtRefreshToken : (req, res) => {

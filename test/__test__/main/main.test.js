@@ -3,7 +3,7 @@ const config = require('../../../src/config');
 const app = require('../../../index')
 const { pool } = require('../../../src/loaders/database');
 const logger = require('../../../src/loaders/logger');
-const { service } = require('../../../src/service/user-service');
+const { userService } = require('../../../src/service/user-service');
 const { mainService } = require('../../../src/service/main-service');
 
 // 서버 open
@@ -22,7 +22,7 @@ beforeAll(done => {
 
 describe('Test /main/user', () => {
     test('유저 세부정보 가져오기', async () => {
-        const user = await service.getUserDetail({"user_id": "12"});
+        const user = await userService.getUserDetail({"user_id": "12"});
         logger.debug(user);
         console.dir(user);
     });
