@@ -1,7 +1,7 @@
-"use strict";
+
 const database = require('../loaders/database');
 const mainStore = require('../models/main-model');
-const logger = require('../loaders/logger');
+//const logger = require('../loaders/logger');
 
 const updateLocation = async (data) => {
     const poolConnection = await database.getPoolConection();

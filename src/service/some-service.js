@@ -1,16 +1,13 @@
-"use strict";
+
 const database = require('../loaders/database');
 const {Some} = require('../models/some-model');
 
 const getLikeMeList = async (data) => {
-    let responseObj = {"code": "200", "message": "><"};
+    const responseObj = {"code": "200", "message": "><"};
     const poolConnection = await database.getPoolConection();
     const someStore = new Some(poolConnection);
-    let [rows] = await someStore.selectLikeMeList(data);
-    //rows = rows.length >0 ? await getCardImages(rows) : {};
-    rows.forEach(user => {
-        user.images = [{"image" : user.images}];
-    });
+    const [rows] = await someStore.selectLikeMeList(data);
+
     responseObj.result = rows;
     poolConnection.release();
     return responseObj;
@@ -24,7 +21,10 @@ const addLikeUser = async (data) => {
     
     let result = {};
 
-    if(count > 0) return result = {sucess:false};
+    if(count > 0) {
+        result = {sucess:false};
+        return result;
+    }
     const [rows] = await someStore.selectLikeMeUser(data);
 
     if(rows.length > 0) {
@@ -44,9 +44,6 @@ const getUserMatchedWithMeList = async (data) => {
     const poolConnection = await database.getPoolConection();
     const someStore = new Some(poolConnection);
     const [rows] = await someStore.selectMatchList(data);
-    rows.forEach(user => {
-        user.images = [{"image" : user.images}];
-    });
     poolConnection.release();
     return rows;
 };
