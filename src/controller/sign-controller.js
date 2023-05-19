@@ -4,7 +4,7 @@ const jwt = require("../gateways/jwt");
 
 module.exports = {
     sendSmsAuthNumber : async (req, res) => {
-        smsAPI.send_message(req, res);
+        smsAPI.sendMessage(req, res);
     },
     getJwtAccessToken : async (req, res) => {
         /*
