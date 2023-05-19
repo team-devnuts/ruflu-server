@@ -1,5 +1,3 @@
-
-
 const logger = require("../loaders/logger");
 
 module.exports = () => function (req, res, next) {
