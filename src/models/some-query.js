@@ -14,7 +14,7 @@ const json = {
         ,B.birth
         ,C.location_latitude as latitude 
         ,C.location_longitude as longtitude
-        ,D.image_file_name as images
+        ,D.image_file_name as image
      FROM like_info A
         JOIN user_profile_info B
             ON A.other_user_id = B.user_id
@@ -72,7 +72,7 @@ const json = {
         ,B.birth
         ,C.location_latitude AS latitude
         ,C.location_longitude AS longitude
-        ,D.image_file_name as images
+        ,D.image_file_name as image
      FROM match_info A
         LEFT JOIN user_profile_info B
             ON A.other_user_id = B.user_id
