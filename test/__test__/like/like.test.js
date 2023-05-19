@@ -3,7 +3,7 @@ const config = require('../../../src/config');
 const app = require('../../../index')
 const { pool } = require('../../../src/loaders/database');
 const logger = require('../../../src/loaders/logger');
-const { service } = require('../../../src/service/some-service');
+const { someService } = require('../../../src/service/some-service');
 
 // 서버 open
 const server = app.listen(config.port, function(){
@@ -32,7 +32,7 @@ describe('Test /some/like', () => {
 
 describe('Test getLikeMe', ()=> {
     test('like 정보 가져오기', async () => {
-        const list = await service.getLikeMeList({user_id: "2"});
+        const list = await someService.getLikeMeList({user_id: "2"});
         logger.info(list.code);
     });
 });
@@ -40,14 +40,14 @@ describe('Test getLikeMe', ()=> {
 
 describe('Test getMatchList', ()=> {
     test('match 정보 가져오기', async () => {
-        const list = await service.getUserMatchedWithMeList({"user_id": "2"});
+        const list = await someService.getUserMatchedWithMeList({"user_id": "2"});
         //logger.info(list);
     });
 });
 
 describe('Test addMatc', ()=> {
     test('match 정보 저장하기', async () => {
-        const count = await service.addUserInMyMatchList({"other_user_id": "2", "user_id": "1"});
+        const count = await someService.addUserInMyMatchList({"other_user_id": "2", "user_id": "1"});
         logger.info(count);
     });
 });

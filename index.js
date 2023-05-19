@@ -5,7 +5,7 @@ const responseMessage = require('./src/middleware/response-message');
 const app = express();
 const cors = require('cors');
 
-//const require  = require('app-root-path');
+// const require  = require('app-root-path');
 
 // 채팅 실시간 처리 구현
 // 1. socket 연결이 안되었을때

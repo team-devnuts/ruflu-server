@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "nodemon ./app.js",
     "start": "forever start -w app.js",
-    "lint": "eslint .",
+    "lint": "eslint src/*",
     "format": "prettier \"./**/*.+(js|json)",
     "test": "jest"
   },
@@ -45,6 +45,7 @@
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
     "eslint": "^8.31.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.6.0",
     "jest": "^29.3.1",
