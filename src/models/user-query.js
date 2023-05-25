@@ -1,6 +1,5 @@
 const json = {
-    selectUserCardList : 
-    `SELECT 
+  selectUserCardList: `SELECT 
         A.user_id
         , A.nick_name
         , A.birth
@@ -24,22 +23,19 @@ const json = {
     AND A.user_id <> :user_id
     LIMIT 49
      `,
-    insertHateUser : 
-    `INSERT INTO hate_info 
+  insertHateUser: `INSERT INTO hate_info 
         (user_id, other_user_id, registeration_date) 
     values 
         (:user_id, other_user_id, NOW())
     `,
-    selectUserAlbum:
-    `SELECT
+  selectUserAlbum: `SELECT
         user_id
         ,image_file_path
         ,image_file_name
     FROM user_album_info
     WHERE user_id IN (
     `,
-    selectUserProfile:
-    `SELECT
+  selectUserProfile: `SELECT
         user_id
         ,height
         ,gender
@@ -49,8 +45,7 @@ const json = {
     FROM user_profile_info
     WHERE user_id IN (
     `,
-    selectUser:
-    `SELECT 
+  selectUser: `SELECT 
         A.user_id
         ,B.nick_name
         ,B.birth
@@ -61,8 +56,7 @@ const json = {
         ON A.user_id = B.user_id
     WHERE A.user_id = :user_id
     `,
-    insertUser:
-    `
+  insertUser: `
     INSERT INTO user_info
     (
         user_id
@@ -82,8 +76,7 @@ const json = {
         , now()
     )
     `,
-    insertUserProfile:
-    `
+  insertUserProfile: `
     INSERT INTO user_profile_info
     (
         user_id
@@ -111,32 +104,25 @@ const json = {
         , :academy
     )
     `,
-    selectUserIdSequence:
-    `
+  selectUserIdSequence: `
     CALL get_nextval(?, @result)
     `,
-    selectUserId:
-    `
+  selectUserId: `
     SELECT CONCAT(DATE_FORMAT(NOW(), '%Y%m%d%h%i'), LPAD(@result, '6', '0')) AS user_id FROM dual;
     `,
-    selectUserByPhoneNumber: 
-    `
+  selectUserByPhoneNumber: `
     SELECT 
         user_id
         ,login_phone_no
     FROM user_info
     WHERE login_phone_no = :phone_number
     `,
-    selectUserByKaKaoSerialNo:
-    `
+  selectUserByKaKaoSerialNo: `
     SELECT
 
     FROM user_info
     WHERE kakao_serial_no = :kakao_serial_no
-    `
-}
+    `,
+};
 
-module.exports = json
-
-
-
+module.exports = json;

@@ -8,7 +8,19 @@
     "start": "forever start -w app.js",
     "lint": "eslint src/*",
     "format": "prettier \"./**/*.+(js|json)",
-    "test": "jest"
+    "test": "jest",
+    "simple-git-hooks": "simple-git-hooks",
+    "lint-staged": "lint-staged",
+    "prepare": "yarn simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "yarn lint-staged"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "author": "",
   "license": "ISC",
@@ -49,7 +61,9 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.6.0",
     "jest": "^29.3.1",
+    "lint-staged": "^13.2.2",
     "prettier": "^2.8.2",
+    "simple-git-hooks": "^2.8.1",
     "supertest": "^6.3.3"
   }
 }

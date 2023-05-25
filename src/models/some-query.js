@@ -1,12 +1,10 @@
 const json = {
-    insertLikeUser :
-    `INSERT INTO like_info 
+  insertLikeUser: `INSERT INTO like_info 
         (user_id, other_user_id, use_yn, registeration_date) 
     values 
         (:user_id,:other_user_id, '1', NOW())
     `,
-    selectLikeMeList:
-    `SELECT
+  selectLikeMeList: `SELECT
         A.user_id
         ,A.other_user_id
         ,B.nick_name
@@ -32,8 +30,7 @@ const json = {
             AND rnum = '1'
      WHERE A.other_user_id = :user_id
     `,
-    selectLikeMeUser:
-    `SELECT
+  selectLikeMeUser: `SELECT
         A.other_user_id as user_id
         ,B.nick_name
         ,B.birth
@@ -47,15 +44,13 @@ const json = {
      WHERE A.other_user_id = :user_id
        AND A.user_id = :other_user_id
     `,
-    insertMatchUser:
-    `
+  insertMatchUser: `
     INSERT INTO match_info
     (user_id, other_user_id, use_yn, registration_date)
     VALUES
     (:user_id, :other_user_id, '1', NOW())
     `,
-    selectMatchUser: 
-    `SELECT
+  selectMatchUser: `SELECT
         A.user_id
         ,B.user_id
      FROM ruflu_lv1_like_info A
@@ -65,8 +60,7 @@ const json = {
      WHERE A.user_id = :userId
        AND A.user_id = B.to_user_id
     `,
-    selectMatchList:
-    `SELECT
+  selectMatchList: `SELECT
         A.user_id
         ,B.nick_name
         ,B.birth
@@ -113,7 +107,7 @@ const json = {
             ON A.user_id = D.user_id
             AND rnum = '1'
      WHERE A.user_id = :user_id
-    `
-}
+    `,
+};
 
 module.exports = json;
