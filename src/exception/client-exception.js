@@ -1,18 +1,18 @@
 class ClientException extends Error {
-    constructor(code, message, ...param) {
-        super(...param);
+  constructor(code, message, ...param) {
+    super(...param);
 
-        if(Error.captureStackTrace){
-            Error.captureStackTrace(this, ClientException);
-        }
+    this.code = code;
+    this.message = message;
 
-        this.code = code;
-        this.message = message;
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ClientException);
     }
+  }
 }
 
-const createClientException = (code, message, ...param) => {
-    return new ClientException(code, message);
-}
+const createClientException = async (code, message, ...param) => {
+  throw new ClientException(code, message, ...param);
+};
 
-module.exports = createClientException;
+module.exports = { createClientException, ClientException };
