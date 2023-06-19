@@ -1,9 +1,12 @@
-const express = require('express');
-const loaders = require('./src/loaders');
-const exceptionHandler = require('./src/middleware/exception-handler');
-const responseMessage = require('./src/middleware/response-message');
+const express = require("express");
+require("express-async-errors");
+const cors = require("cors");
+const loaders = require("./src/loaders");
+const exceptionHandler = require("./src/middleware/exception-handler");
+const responseMessage = require("./src/middleware/response-message");
+
 const app = express();
-const cors = require('cors');
+const { log } = require("./src/loaders/logger");
 
 // const require  = require('app-root-path');
 
@@ -28,21 +31,20 @@ io.on("connection", (socket) => {
         console.log(room_no);
         socket.join(room_no);
     });
-    
+
     socket.on("new message", (data) => {
-        
+
         console.log(data);
     });
 });
 */
 
 (async () => {
-    app.use(responseMessage());
-    app.use(exceptionHandler());
-    app.use(cors({origin: '*', credential: true}))
-    await loaders({ expressApp: app });
+  app.use(cors({ origin: "*", credential: true }));
+  app.use(log);
+  app.use(responseMessage());
+  await loaders({ expressApp: app });
+  app.use(exceptionHandler());
 })();
 
 module.exports = app;
-
-
