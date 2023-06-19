@@ -5,7 +5,7 @@ const admin = require("firebase-admin");
 const db = require("../../../loaders/database");
 
 const serviceAccount = require("../../../../ruflu-e48f5-firebase-adminsdk-spqgm-acc7d36e6e.json");
-const logger = require("../../../loaders/logger");
+const { logger } = require("../../../loaders/logger");
 
 const router = express.Router();
 

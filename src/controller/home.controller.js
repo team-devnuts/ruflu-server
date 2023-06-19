@@ -1,5 +1,5 @@
-const { userService } = require("../service/user-service");
-//  const logger = require('../loaders/logger');
+const { userService } = require("../service/user.service");
+//  const { logger } = require('../loaders/logger');
 
 const getUsers = async (req, res) => {
   const data = { user_id: req.get("user_id") };

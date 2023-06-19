@@ -1,11 +1,12 @@
 const { smsAPI } = require("../gateways/sms");
-const { userService } = require("../service/user-service");
+const { userService } = require("../service/user.service");
 const jwt = require("../gateways/jwt");
 
 module.exports = {
   sendSmsAuthNumber: async (req, res) => {
     smsAPI.sendMessage(req, res);
   },
+  // eslint-disable-next-line
   getJwtAccessToken: async (req, res) => {
     /*
         1. Refresh Token 검증
@@ -16,9 +17,9 @@ module.exports = {
     req.responseObject.result.token = await jwt.publishAccessToken(
       refreshToken
     );
-    res.json(req.responseObject);
+    return req.responseObject;
   },
-
+  // eslint-disable-next-line
   signUp: async (req, res) => {
     const user = req.body;
 
@@ -26,12 +27,16 @@ module.exports = {
     result.refreshToken = jwt.sign(result);
 
     req.responseObject.result = result;
-    res.json(req.responseObject);
+    return req.responseObject;
   },
+  // eslint-disable-next-line
   login: async (req, res) => {
-    const { body } = req;
-    req.responseObject.result = await userService.login(body);
-    res.json(req.responseObject);
+    const user = {
+      login_phone_no: req.body.login_phone_no,
+      kakao_serial_no: req.body.kakao_serial_no,
+    };
+    req.responseObject.result = await userService.login(user);
+    return req.responseObject;
   },
 
   // getJwtRefreshToken : (req, res) => {

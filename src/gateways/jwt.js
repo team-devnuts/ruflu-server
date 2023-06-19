@@ -1,7 +1,7 @@
 const { verify } = require("crypto");
 const jsonwebtoken = require("jsonwebtoken");
 const config = require("../config");
-const createClientException = require("../exception/client-exception");
+const { createClientException } = require("../exception/client-exception");
 
 module.exports = {
   sign: (user) => {

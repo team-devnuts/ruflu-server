@@ -1,8 +1,9 @@
 const express = require("express");
-const signController = require("../../../controller/sign-controller");
+const signController = require("../../../controller/sign.controller");
 
 const router = express.Router();
-const logger = require("../../../loaders/logger");
+const { logger } = require("../../../loaders/logger");
+// const { ClientException } = require("../../../exception/client-exception");
 
 module.exports = (app) => {
   app.use("/auth", router);
@@ -63,7 +64,7 @@ module.exports = (app) => {
              - 없으면 회원가입으로 이동하라고 응답
             4. refreshtoken accesstoken 재발급
         */
-    res.json(await signController.login());
+    res.json(await signController.login(req, res));
   });
 
   router.post("/sms", async (req, res) => {

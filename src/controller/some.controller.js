@@ -1,5 +1,5 @@
-const { someService } = require("../service/some-service");
-// const logger = require('../loaders/logger');
+const { someService } = require("../service/some.service");
+// const { logger } = require('../loaders/logger');
 
 const addLikeUser = async (req, res) => {
   const otherUserId = req.body.other_user_id;

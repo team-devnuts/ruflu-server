@@ -3,7 +3,7 @@ const axios = require("axios");
 const CryptoJS = require("crypto-js");
 // const SHA256 = require('crypto-js/sha256');
 // const Base64 = require('crypto-js/enc-base64');
-const logger = require("../loaders/logger");
+const { logger } = require("../loaders/logger");
 
 const requestSmsApiService = async (url, headers, body) => {
   let resultCode = 404;

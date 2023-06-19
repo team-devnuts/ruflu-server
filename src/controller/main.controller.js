@@ -1,5 +1,5 @@
-const { mainService } = require("../service/main-service");
-const { userService } = require("../service/user-service");
+const { mainService } = require("../service/main.service");
+const { userService } = require("../service/user.service");
 
 const updateLocation = async (req, res) => {
   const { latitude, longitude } = req.body;

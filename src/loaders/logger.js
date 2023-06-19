@@ -4,8 +4,8 @@ const winston = require("winston");
 
 const { combine, timestamp, label, printf } = winston.format;
 
-// eslint-disable-next-line
 const myFormat = printf(
+  // eslint-disable-next-line
   ({ level, message, label, timestamp }) =>
     `${timestamp} [${label}] ${level}: ${message}`
 );
@@ -58,6 +58,13 @@ const logger = new winston.createLogger({
   exitOnError: true, // do not exit on handled exceptions
 });
 
+const log = (req, res, next) => {
+  const start = Date.now();
+  logger.info(`start : ${req.method} ${req.url}`);
+  next();
+  const diffTime = Date.now() - start;
+  logger.info(`end : ${req.method} ${req.url} ${diffTime}ms`);
+};
 /*
 logger.stream = {
   write: function(message, encoding) {
@@ -66,4 +73,4 @@ logger.stream = {
 };
 */
 
-module.exports = logger;
+module.exports = { logger, log };

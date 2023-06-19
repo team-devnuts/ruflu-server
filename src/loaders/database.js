@@ -1,5 +1,5 @@
 const mysqlPromise = require("mysql2/promise");
-const logger = require("./logger");
+const { logger } = require("./logger");
 const config = require("../config");
 
 const pool = mysqlPromise.createPool({
@@ -8,6 +8,9 @@ const pool = mysqlPromise.createPool({
   user: config.databaseID,
   password: config.databasePW,
   database: config.databaseNAME,
+  waitForConnections: true,
+  keepAliveInitialDelay: 10000, // 0 by default.
+  enableKeepAlive: true, // false by default.
 });
 
 logger.info("Connection pool created.");

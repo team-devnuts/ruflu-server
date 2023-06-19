@@ -1,8 +1,8 @@
 const express = require("express");
 
 const router = express.Router();
-const controller = require("../../../controller/some-controller");
-// const logger = require('../../../loaders/logger');
+const controller = require("../../../controller/some.controller");
+// const { logger } = require('../../../loaders/logger');
 
 module.exports = async (app) => {
   app.use("/some", router);
