@@ -4,9 +4,9 @@ const cors = require("cors");
 const loaders = require("./src/loaders");
 const exceptionHandler = require("./src/middleware/exception-handler");
 const responseMessage = require("./src/middleware/response-message");
+const { log } = require("./src/loaders/logger");
 
 const app = express();
-const { log } = require("./src/loaders/logger");
 
 // const require  = require('app-root-path');
 
