@@ -8,7 +8,7 @@ function setErrorResponse(res, code, message) {
 
 module.exports = () =>
   function (error, req, res, next) {
-    logger.error(error);
+    logger.error(error.message);
     if (error instanceof ClientException) {
       setErrorResponse(res, error.code, error.message);
     }

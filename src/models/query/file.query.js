@@ -65,7 +65,7 @@ const json = {
       ,image_file_path
       ,image_original_file_name
       ,ext
-      ,${IMAGE_BASE_PATH}|| image_file_name || '.' || ext as image_url_path
+      ,'${IMAGE_BASE_PATH}' || image_file_name || '.' || ext as image_url_path
   FROM user_album_info
   WHERE use_yn = 1
     AND user_id IN (

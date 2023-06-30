@@ -1,3 +1,4 @@
+const mysql = require("mysql");
 const { getPoolConection } = require("../loaders/database");
 const { logger } = require("../loaders/logger");
 const fileQueryStore = require("./query/file.query");

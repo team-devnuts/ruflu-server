@@ -24,7 +24,7 @@ const json = {
         JOIN (
             SELECT 
                 user_id
-                ,${IMAGE_BASE_PATH}|| image_file_name || '.' || ext as image_url_path
+                ,'${IMAGE_BASE_PATH}' || image_file_name || '.' || ext as image_url_path
                 ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
             FROM user_album_info
             WHERE use_yn = '1'
@@ -78,7 +78,7 @@ const json = {
         LEFT JOIN (
                 SELECT 
                     user_id
-                    ,${IMAGE_BASE_PATH}|| image_file_name || '.' || ext as image_url_path
+                    ,'${IMAGE_BASE_PATH}' || image_file_name || '.' || ext as image_url_path
                     ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
                 FROM user_album_info
                 WHERE use_yn = '1'
@@ -102,7 +102,7 @@ const json = {
         LEFT JOIN (
                 SELECT 
                     user_id
-                    ,${IMAGE_BASE_PATH}|| image_file_name || '.' || ext as image_url_path
+                    ,'${IMAGE_BASE_PATH}' || image_file_name || '.' || ext as image_url_path
                     ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
                 FROM user_album_info
                 WHERE use_yn = '1'

@@ -36,7 +36,7 @@ const getUserListImages = async (userList) => {
     const imageArr = [];
     rows.forEach((userAlbum) => {
       if (userTemp.user_id === userAlbum.user_id) {
-        imageArr.push({ image: userAlbum.image_file_name });
+        imageArr.push({ image: userAlbum.image_url_path });
       }
     });
     userTemp.images = imageArr;

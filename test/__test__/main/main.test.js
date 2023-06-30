@@ -12,7 +12,7 @@ const server = app
     logger.info(`Express server listening on port ${config.port}`);
   })
   .on("error", (err) => {
-    logger.error(err);
+    logger.error(err.message);
     process.exit(1);
   })
   .on("close", () => {

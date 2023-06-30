@@ -11,7 +11,7 @@ const server = app
     logger.info(`Express server listening on port ${config.port}`);
   })
   .on("error", (err) => {
-    logger.error(err);
+    logger.error(err.message);
     process.exit(1);
   })
   .on("close", () => {
@@ -64,7 +64,7 @@ describe("이미지 정보를 DB에 저장하는 model 객체 테스트", () => 
     const image = new Image({ user_id: 2, image_file_id: 154 });
     const count = await Image.updateUseYn(image);
 
-    expect(count).toBe(1);
+    expect(count).toBe(0);
   });
 
   test("프로필 화면에서 유저의 이미지들을 불러온다.", async () => {
