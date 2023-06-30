@@ -61,7 +61,7 @@ User.getUserProfile = async (users) => {
   return result;
 };
 
-User.insertHateUser = async (user) => {
+User.createHateUser = async (user) => {
   const poolConnection = await getPoolConection();
   await poolConnection.beginTransaction();
   const [result] = await poolConnection.query(
@@ -73,14 +73,14 @@ User.insertHateUser = async (user) => {
   return result.affectedRows;
 };
 
-User.selectUser = async (user) => {
+User.getUser = async (user) => {
   const poolConnection = await getPoolConection();
   const result = await poolConnection.query(userQueryStore.selectUser, user);
   poolConnection.release();
   return result;
 };
 
-User.insertUser = async (user) => {
+User.create = async (user) => {
   const poolConnection = await getPoolConection();
   await poolConnection.beginTransaction();
   let [result] = await poolConnection.query(userQueryStore.insertUser, user);

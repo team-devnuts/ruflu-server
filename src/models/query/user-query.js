@@ -28,13 +28,6 @@ const json = {
     values 
         (:user_id, other_user_id, NOW())
     `,
-  selectUserAlbum: `SELECT
-        user_id
-        ,image_file_path
-        ,image_file_name
-    FROM user_album_info
-    WHERE user_id IN (
-    `,
   selectUserProfile: `SELECT
         user_id
         ,height

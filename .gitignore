@@ -1,5 +1,7 @@
-#config 폴더 내 모든 파일 무시
-#/config/
+# config 폴더 내 모든 파일 무시
+# /config/
+# 정적 파일 폴더
+uploads/
 
 #ruflu firebase key ignore
 ruflu-e48f5-firebase-adminsdk-spqgm-acc7d36e6e.json

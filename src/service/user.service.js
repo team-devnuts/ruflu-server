@@ -3,6 +3,7 @@ const User = require("../models/user.model");
 const config = require("../config");
 const jwt = require("../gateways/jwt");
 const { createClientException } = require("../exception/client-exception");
+const Image = require("../models/file.model");
 // const { logger } = require('../loaders/logger');
 
 const { profileTitle } = config;
@@ -16,7 +17,7 @@ const getUsers = async (data) => {
 
 const getUserDetail = async (data) => {
   const user = new User(data);
-  let [rows] = await User.selectUser(user);
+  let [rows] = await User.getUser(user);
   rows = rows.length > 0 ? await getUserProfile(rows) : rows;
   rows = rows.length > 0 ? await getUserListImages(rows) : rows;
   return rows[0];
@@ -24,12 +25,12 @@ const getUserDetail = async (data) => {
 
 const addHateUser = async (data) => {
   const user = new User(data);
-  const count = await User.insertHateUser(user);
+  const count = await User.createHateUser(user);
   return count > 0 ? "success" : "";
 };
 
 const getUserListImages = async (userList) => {
-  const [rows] = await User.getUserListImages(userList);
+  const [rows] = await Image.getUserListImages(userList);
   const userInfo = userList.map((user) => {
     const userTemp = user;
     const imageArr = [];
@@ -80,7 +81,7 @@ const saveUserInformation = async (data) => {
   }
   user.user_id = await User.getUserId();
 
-  const isCompleted = await User.insertUser(user);
+  const isCompleted = await User.create(user);
   if (!isCompleted) {
     result.message = "failed";
     return result;
