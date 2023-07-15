@@ -11,7 +11,7 @@ const server = app
     logger.info(`Express server listening on port ${config.port}`);
   })
   .on("error", (err) => {
-    logger.error(err);
+    logger.error(err.message);
     process.exit(1);
   })
   .on("close", () => {
@@ -36,7 +36,7 @@ describe("Test /some/like", () => {
 describe("Test getLikeMe", () => {
   test("like 정보 가져오기", async () => {
     const list = await someService.getLikeMeList({ user_id: "2" });
-    logger.info(list.code);
+    // logger.info(list.code);
   });
 });
 
@@ -53,7 +53,7 @@ describe("Test addMatc", () => {
       other_user_id: "2",
       user_id: "1",
     });
-    logger.info(count);
+    // logger.info(count);
   });
 });
 

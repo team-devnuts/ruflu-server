@@ -10,7 +10,7 @@ const server = app
     logger.info(`Express server listening on port ${config.port}`);
   })
   .on("error", (err) => {
-    logger.error(err);
+    logger.error(err.message);
     process.exit(1);
   })
   .on("close", () => {
@@ -34,7 +34,7 @@ describe("Test /home/userCardList", () => {
       .get("/api/home/users")
       .set("user_id", 1);
     expect(response.status).toBe(200);
-    logger.info(response.body);
+    // logger.info(response.body);
   });
 });
 

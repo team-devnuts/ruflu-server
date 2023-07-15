@@ -1,3 +1,6 @@
+const config = require("../../config");
+
+const { IMAGE_BASE_PATH } = config;
 const json = {
   insertLikeUser: `INSERT INTO like_info 
         (user_id, other_user_id, use_yn, registeration_date) 
@@ -12,7 +15,7 @@ const json = {
         ,B.birth
         ,C.location_latitude as latitude 
         ,C.location_longitude as longtitude
-        ,D.image_file_name as image
+        ,D.image_url_path as image
      FROM like_info A
         JOIN user_profile_info B
             ON A.other_user_id = B.user_id
@@ -21,7 +24,7 @@ const json = {
         JOIN (
             SELECT 
                 user_id
-                ,image_file_name
+                ,'${IMAGE_BASE_PATH}' || image_file_name || '.' || ext as image_url_path
                 ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
             FROM user_album_info
             WHERE use_yn = '1'
@@ -66,7 +69,7 @@ const json = {
         ,B.birth
         ,C.location_latitude AS latitude
         ,C.location_longitude AS longitude
-        ,D.image_file_name as image
+        ,D.image_url_path as image
      FROM match_info A
         LEFT JOIN user_profile_info B
             ON A.other_user_id = B.user_id
@@ -75,7 +78,7 @@ const json = {
         LEFT JOIN (
                 SELECT 
                     user_id
-                    ,image_file_name
+                    ,'${IMAGE_BASE_PATH}' || image_file_name || '.' || ext as image_url_path
                     ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
                 FROM user_album_info
                 WHERE use_yn = '1'
@@ -90,7 +93,7 @@ const json = {
         ,B.birth
         ,C.location_latitude AS latitude
         ,C.location_longitude AS longitude
-        ,D.image_file_name as images
+        ,D.image_url_path as images
      FROM match_info A
         LEFT JOIN user_profile_info B
             ON A.user_id = B.user_id
@@ -99,7 +102,7 @@ const json = {
         LEFT JOIN (
                 SELECT 
                     user_id
-                    ,image_file_name
+                    ,'${IMAGE_BASE_PATH}' || image_file_name || '.' || ext as image_url_path
                     ,RANK() OVER(PARTITION BY user_id ORDER BY registeration_date) AS rnum
                 FROM user_album_info
                 WHERE use_yn = '1'

@@ -1,6 +1,6 @@
 // const { StatusCodes } = require("http-status-codes");
 const { ClientException } = require("../exception/client-exception");
-// const { logger } = require("../loaders/logger");
+const { logger } = require("../loaders/logger");
 
 function setErrorResponse(res, code, message) {
   res.status(code).json({ code, message });
@@ -8,9 +8,9 @@ function setErrorResponse(res, code, message) {
 
 module.exports = () =>
   function (error, req, res, next) {
+    logger.error(error.message);
     if (error instanceof ClientException) {
       setErrorResponse(res, error.code, error.message);
     }
-    // setErrorResponse(res, StatusCodes.ACCEPTED, "");
-    next();
+    setErrorResponse(res, error.code, "");
   };

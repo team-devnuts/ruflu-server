@@ -25,9 +25,9 @@ describe("Test /home/userCardList", () => {
   test("유저 정보를 가지고오기", async () => {
     const response = await request(app)
       .get("/api/home/users")
-      .set("user_id", 1);
+      .set("user_id", 2);
     expect(response.status).toBe(200);
-    logger.info(response.body);
+    // logger.info(response.body);
   });
 });
 

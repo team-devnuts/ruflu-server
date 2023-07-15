@@ -1,6 +1,7 @@
 // const appRoot = require('app-root-path');
 // const process = require('process');
 const winston = require("winston");
+const moment = require("moment-timezone");
 
 const { combine, timestamp, label, printf } = winston.format;
 
@@ -9,6 +10,13 @@ const myFormat = printf(
   ({ level, message, label, timestamp }) =>
     `${timestamp} [${label}] ${level}: ${message}`
 );
+
+const appendTimestamp = winston.format((info, opts) => {
+  if (opts.tz)
+    // eslint-disable-next-line
+    info.timestamp = moment().tz(opts.tz).format(" YYYY-MM-DD HH:mm:ss ||");
+  return info;
+});
 
 const options = {
   file: {
@@ -21,7 +29,7 @@ const options = {
     format: combine(
       winston.format.colorize({ all: true }),
       label({ label: "express_server" }),
-      timestamp(),
+      appendTimestamp({ tz: "Asia/Seoul" }),
       myFormat
     ),
   },
