@@ -2,7 +2,7 @@
   "name": "rufluServer",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "nodemon ./app.js",
     "start": "forever start -w app.js",
@@ -41,6 +41,7 @@
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^9.0.0",
     "moment-timezone": "^0.5.43",
+    "mongoose": "^7.3.4",
     "multer": "^1.4.5-lts.1",
     "multiline": "^2.0.0",
     "mysql": "^2.18.1",
