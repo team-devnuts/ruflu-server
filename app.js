@@ -1,10 +1,10 @@
-const app = require("./index");
+const server = require("./index");
 const config = require("./src/config");
 const { logger } = require("./src/loaders/logger");
 const { pool } = require("./src/loaders/database");
 
 // 서버 open
-const server = app
+server
   .listen(config.port, () => {
     logger.info(`Express server listening on port ${config.port}`);
   })
