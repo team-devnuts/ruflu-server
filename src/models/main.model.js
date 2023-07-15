@@ -34,4 +34,14 @@ Main.updateToken = async (main) => {
   return result.affectedRows;
 };
 
+Main.getAlarmTokenByUserId = async (userId) => {
+  const poolConnection = await getPoolConection();
+  const [result] = await poolConnection.query(
+    mainQueryStore.getAlarmTokenByUserId,
+    userId
+  );
+  poolConnection.release();
+  return result[0].alarm_token;
+};
+
 module.exports = Main;
