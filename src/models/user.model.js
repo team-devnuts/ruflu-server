@@ -13,6 +13,7 @@ class User {
     this.kakao_serial_no = user.kakao_serial_no;
     this.location_latitude = user.location_latitude;
     this.location_longtitude = user.location_longtitude;
+    this.socket_id = user.socket_id;
   }
 }
 
@@ -132,4 +133,14 @@ User.getUserByKakaoSerialNo = async (kakaoSerialNo) => {
   return result;
 };
 
-module.exports = User;
+User.updateSocketId = async (user) => {
+  const poolConnection = await getPoolConection();
+  const [result] = await poolConnection.query(
+    userQueryStore.updateSocketId,
+    user
+  );
+  poolConnection.release();
+  return result.affectedRows;
+};
+
+User.module.exports = User;
