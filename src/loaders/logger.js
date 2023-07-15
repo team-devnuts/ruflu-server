@@ -3,7 +3,7 @@
 const winston = require("winston");
 const moment = require("moment-timezone");
 
-const { combine, timestamp, label, printf } = winston.format;
+const { combine, label, printf } = winston.format;
 
 const myFormat = printf(
   // eslint-disable-next-line
@@ -56,6 +56,7 @@ const options = {
     custom: "yellow",
   },
 };
+
 winston.addColors(options.colors);
 
 // eslint-disable-next-line
@@ -73,6 +74,7 @@ const log = (req, res, next) => {
   const diffTime = Date.now() - start;
   logger.info(`end : ${req.method} ${req.url} ${diffTime}ms`);
 };
+
 /*
 logger.stream = {
   write: function(message, encoding) {

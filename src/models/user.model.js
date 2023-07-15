@@ -143,4 +143,4 @@ User.updateSocketId = async (user) => {
   return result.affectedRows;
 };
 
-User.module.exports = User;
+module.exports = User;
