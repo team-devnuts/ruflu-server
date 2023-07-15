@@ -3,6 +3,9 @@
 # 정적 파일 폴더
 uploads/
 
+# DS_Store 무시
+.DS_Store
+
 #ruflu firebase key ignore
 ruflu-e48f5-firebase-adminsdk-spqgm-acc7d36e6e.json
 
