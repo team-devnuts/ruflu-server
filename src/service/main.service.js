@@ -11,7 +11,13 @@ const updateToken = async (data) => {
   return count > 0 ? "success" : "failed";
 };
 
+const getAlarmTokenByUserId = async (userId) => {
+  const deviceToken = await Main.getAlarmTokenByUserId(userId);
+  return deviceToken;
+};
+
 exports.mainService = {
   updateLocation,
   updateToken,
+  getAlarmTokenByUserId,
 };
