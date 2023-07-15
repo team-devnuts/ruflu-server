@@ -116,6 +116,10 @@ const json = {
     FROM user_info
     WHERE kakao_serial_no = :kakao_serial_no
     `,
+  updateSocketId: `
+  UPDATE user_info SET socket_id = :socket_id
+  WHERE user_id = :user_id
+  `,
 };
 
 module.exports = json;

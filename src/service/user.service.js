@@ -116,10 +116,17 @@ const login = async (data) => {
   return { refreshToken, accessToken };
 };
 
+const saveSocketId = async (data) => {
+  const user = new User(data);
+  const count = await User.updateSocketId(user);
+  return count > 0 ? { success: true } : { success: false };
+};
+
 exports.userService = {
   getUsers,
   addHateUser,
   getUserDetail,
   saveUserInformation,
   login,
+  saveSocketId,
 };
