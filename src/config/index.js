@@ -3,13 +3,14 @@
 require("dotenv").config();
 
 module.exports = {
-  DEV: process.env.DEV,
+  DEV: process.env.ERVER_ENV,
   port: process.env.APP_PORT,
   databaseHOST: process.env.MYSQL_ACCESS_HOST,
   databasePORT: process.env.MYSQL_ACCESS_PORT,
   databaseID: process.env.MYSQL_ACCESS_ID,
   databasePW: process.env.MYSQL_ACCESS_PW,
   databaseNAME: process.env.MYSQL_DATABASE,
+  mongooseURL: process.env.MONGOOSE_URL,
   imageDIR: process.env.IMAGE_DIR,
   jwtAccessSecretKey: process.env.JWT_SECRETKEY,
   jwtRefreshSecretKey: process.env.JWT_REFRESH_SECRETKEY,
