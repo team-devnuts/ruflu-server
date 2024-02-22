@@ -9,7 +9,6 @@
 - express.js
 - socket.io
 - nginx
-- RESTful API
 
 ### 기술 스택
 Language : javascript CommonJS
