@@ -1,5 +1,5 @@
 # ruflu
-원하는 상대와 매칭되면 대화할 수 있는 데이팅 앱 RESTful Api
+원하는 상대와 매칭되면 대화할 수 있는 데이팅 앱 Web Api
 
 ### 개발환경
 - linux centos 8
